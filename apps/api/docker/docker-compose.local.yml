@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  instapay-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+      args:
+        uid: $USER_ID
+    container_name: instapay-api
+    networks:
+      - instapay
+    ports:
+      - 20188:80
+    volumes:
+      - ..:/var/www/html
+      - ~/.ssh:/var/www/.ssh
+      - ~/.composer:/var/www/.composer
+
+networks:
+  default:
+    external:
+      name: local_default
+  instapay:
+    # name: instapay
+    external: true

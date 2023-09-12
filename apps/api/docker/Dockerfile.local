@@ -1,0 +1,34 @@
+FROM dzangolab/php-nginx:8.1
+
+LABEL author="Dzango Technologies <info@dzango.com>"
+
+# Intall packages for image optimization
+RUN apt-get update \
+  && apt-get install jpegoptim optipng pngquant gifsicle webp -y \
+  && apt-get clean autoclean \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+ARG post_max_size='500M'
+
+ARG timezone='Asia/Bangkok'
+
+ARG uid=1000
+
+ARG upload_max_filesize='100M'
+
+COPY nginx.conf /etc/nginx/conf.d/nginx.conf
+
+RUN cd /var/www \
+    && echo opcache.enable=0 > /usr/local/etc/php/conf.d/opcache.ini \
+  && usermod -u $uid www-data && groupmod -g $uid www-data \
+  && chown -R www-data:www-data /var/lib/nginx /var/run/nginx.pid /var/www /var/log \
+  && echo "date.timezone="$timezone > /usr/local/etc/php/conf.d/date_timezone.ini \
+  && echo "upload_max_filesize="$upload_max_filesize > /usr/local/etc/php/conf.d/upload_max_filesize.ini \
+  && echo "post_max_size="$post_max_size > /usr/local/etc/php/conf.d/post_max_size.ini
+
+RUN touch /var/log/cron.log
+
+WORKDIR /var/www/html
+
+USER www-data

@@ -1,0 +1,41 @@
+#!/bin/sh
+
+set -e
+
+if [ -n "${APP_KEY_FILE}" ]; then
+  APP_KEY=$(cat "$APP_KEY_FILE")
+  export APP_KEY
+fi
+
+if [ -n "${DOCUMENT_FS_SECRET_ACCESS_KEY_FILE}" ]; then
+  DOCUMENT_FS_SECRET_ACCESS_KEY=$(cat "$DOCUMENT_FS_SECRET_ACCESS_KEY_FILE")
+  export DOCUMENT_FS_SECRET_ACCESS_KEY
+fi
+
+if [ -n "${KRUNGSRI_CLIENT_SECRET_FILE}" ]; then
+  KRUNGSRI_CLIENT_SECRET=$(cat "$KRUNGSRI_CLIENT_SECRET_FILE")
+  export KRUNGSRI_CLIENT_SECRET
+fi
+
+if [ -n "${KRUNGSRI_SIGNATURE_KEY_FILE}" ]; then
+  KRUNGSRI_SIGNATURE_KEY=$(cat "$KRUNGSRI_SIGNATURE_KEY_FILE")
+  export KRUNGSRI_SIGNATURE_KEY
+fi
+
+if [ -n "${PASSPORT_PRIVATE_KEY_FILE}" ]; then
+  PASSPORT_PRIVATE_KEY=$(cat "$PASSPORT_PRIVATE_KEY_FILE")
+  export PASSPORT_PRIVATE_KEY
+fi
+
+if [ -n "${DB_PASSWORD_FILE}" ]; then
+  DB_PASSWORD=$(cat "$DB_PASSWORD_FILE")
+  export DB_PASSWORD
+fi
+
+if [ -n "${MAIL_PASSWORD_FILE}" ]; then
+  MAIL_PASSWORD=$(cat "$MAIL_PASSWORD_FILE")
+  export MAIL_PASSWORD
+fi
+
+php artisan config:cache
+php artisan route:cache
