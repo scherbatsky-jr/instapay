@@ -1,0 +1,3 @@
+data
+fixtures/*.sql
+!fixtures/c4c_leads.sql

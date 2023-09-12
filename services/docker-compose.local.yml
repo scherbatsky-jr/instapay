@@ -1,0 +1,54 @@
+version: "3.8"
+
+networks:
+  services:
+    driver: bridge
+    name: ${NETWORK}
+
+services:
+  instapay-mailhog:
+    container_name: ${PROJECT}-mailhog
+    image: mailhog/mailhog:latest
+    networks:
+      - services
+    ports:
+      - ${MAILHOG_PORT}:8025
+
+  instapay-mariadb:
+    container_name: ${PROJECT}-mariadb
+    env_file: .env
+    image: mariadb:10.5
+    networks:
+      - services
+    ports:
+      - ${MARIADB_PORT}:3306
+    volumes:
+      - ./mariadb/conf.d/character_set.cnf:/etc/mysql/conf.d/character-set.cnf
+      - ./mariadb/data:/var/lib/mysql
+      - ./mariadb/fixtures:/docker-entrypoint-initdb.d
+
+  instapay-minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    container_name: instapay-minio
+    environment:
+      - "MINIO_ROOT_USER=instapay"
+      - "MINIO_ROOT_PASSWORD=instapay"
+    ports:
+      - "${MINIO_PORT}:9001"
+      - "9000:9000"
+    networks:
+      - services
+
+  instapay-phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: ${PROJECT}-phpmyadmin
+    depends_on:
+      - ${PROJECT}-mariadb
+    environment:
+      PMA_ABSOLUTE_URI: http://localhost:${PHPMYADMIN_PORT}
+      PMA_HOSTS: ${PROJECT}-mariadb
+    networks:
+      - services
+    ports:
+      - ${PHPMYADMIN_PORT}:80
