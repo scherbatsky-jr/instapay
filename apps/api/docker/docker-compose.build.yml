@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  siamcardeal-services-db:
+    container_name: siamcardeal-services-db-${CI_PIPELINE_ID}
+    environment:
+      - MARIADB_DATABASE=siamcardeal_services
+      - MARIADB_PASSWORD=siamcardeal
+      - MARIADB_ROOT_PASSWORD=siamcardeal
+      - MARIADB_USER=siamcardeal-services
+    expose:
+      - 3306
+    image: ${TEST_DB_IMAGE}
+
+  siamcardeal-services-api:
+    container_name: siamcardeal-services-api
+    depends_on:
+      - siamcardeal-services-db
+    env_file:
+      - ../.env.build
+    image: siamcardeal-services/api:${CI_PIPELINE_ID}
+    user: www-data

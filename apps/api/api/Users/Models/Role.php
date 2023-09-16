@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     public const ROLE_ADMIN = 'Admin';
-    public const ROLE_BROKER_MANAGER = 'Broker Manager';
-    public const ROLE_BROKER_SALES = 'Broker Sales';
-    public const ROLE_OPERATOR = 'Operator';
-    public const ROLE_SUPER_ADMIN = 'Super Admin';
+    public const ROLE_SELLER = 'Seller';
+    public const ROLE_CUSTOMER = 'Customer';
 
     public function activeUsers()
     {

@@ -12,7 +12,7 @@ return new class() extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('scds_jobs');
+        Schema::dropIfExists('jobs');
     }
 
     /**
@@ -22,7 +22,7 @@ return new class() extends Migration {
      */
     public function up()
     {
-        Schema::create('scds_jobs', function (Blueprint $table) {
+        Schema::create('jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('queue')->index();
             $table->longText('payload');

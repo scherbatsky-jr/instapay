@@ -10,12 +10,10 @@ class Profile extends Model
 
     protected $fillable = [
         'given_name',
-        'locale',
-        'nickname',
         'surname',
     ];
 
-    protected $table = 'scds_profiles';
+    protected $table = 'profiles';
 
     public function user()
     {

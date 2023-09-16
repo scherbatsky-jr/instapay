@@ -21,7 +21,7 @@ class AddUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'scds:user:add {email} {password} {role} {parentId?} {--dry-run=1}';
+    protected $signature = 'user:add {email} {password} {role} {--dry-run=1}';
 
     /**
      * Execute the console command.
@@ -42,22 +42,13 @@ class AddUserCommand extends Command
 
         $password = $this->argument('password');
         $role = $this->argument('role');
-        $parentId = $this->argument('parentId');
 
         if ('admin' === $role) {
             $role = Role::getRole(Role::ROLE_ADMIN);
-        } elseif ('broker-manager' === $role) {
-            $role = Role::getRole(Role::ROLE_BROKER_MANAGER);
-        } elseif ('broker-sales' === $role) {
-            $role = Role::getRole(Role::ROLE_BROKER_SALES);
-
-            if (!$parentId) {
-                $this->error('Please enter user id of the parent.');
-
-                return;
-            }
-        } elseif ('operator' === $role) {
-            $role = Role::getRole(Role::ROLE_OPERATOR);
+        } elseif ('seller' === $role) {
+            $role = Role::getRole(Role::ROLE_SELLER);
+        } elseif ('customer' === $role) {
+            $role = Role::getRole(Role::ROLE_CUSTOMER);
         } else {
             $this->error('Invalid Role. Please enter either admin, broker-manager, broker-sales or operator.');
 
@@ -68,11 +59,8 @@ class AddUserCommand extends Command
             $user = User::create([
                 'email' => $email,
                 'password' => Hash::make($password),
-                'username' => $email,
-                'parent_id' => $parentId,
+                'username' => $email
             ]);
-
-            User::fixTree();
 
             UserRole::create([
                 'user_id' => $user->id,

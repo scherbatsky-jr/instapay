@@ -1,0 +1,181 @@
+variables:
+  AWS_REGISTRY: 975993233503.dkr.ecr.ap-southeast-1.amazonaws.com
+  IMAGE_API: 975993233503.dkr.ecr.ap-southeast-1.amazonaws.com/siamcardeal-services/api
+  IMAGE_API_DEVELOP: $IMAGE_API:$CI_BUILD_REF_NAME
+  IMAGE_API_LOCAL: siamcardeal-services/api:$CI_PIPELINE_ID
+  IMAGE_API_STAGING: $IMAGE_API:$VERSION-staging
+  IMAGE_LATEST: $IMAGE_API:$VERSION
+  IMAGE_TAGGED: $IMAGE_API:$CI_BUILD_REF_NAME
+  SERVICE: api
+  TAG: "$VERSION.26"
+  TEST_DB_IMAGE: "975993233503.dkr.ecr.ap-southeast-1.amazonaws.com/siamcardeal-services/test-db:0.1"
+  VERSION: "0.1"
+
+build_api:
+  after_script:
+    - docker-compose -f apps/api/docker/docker-compose.build.yml down --rmi local -v --remove-orphans
+    - docker rmi -f $IMAGE_API_LOCAL
+  before_script:
+    - docker login -u AWS -p $(docker run --rm -e AWS_ACCESS_KEY_ID=$SCD_AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$SCD_AWS_SECRET_ACCESS_KEY amazon/aws-cli ecr get-login-password --region ap-southeast-1) $AWS_REGISTRY
+  environment: build
+  image: docker/compose:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == $VERSION
+      when: never
+    - if: $CI_COMMIT_BRANCH == "0.1-develop"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "0.1.staging"
+      when: never
+    - if: $CI_COMMIT_BRANCH == "0.1.master"
+      when: never
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - when: on_success
+      changes:
+        - apps/api/**/*
+  script:
+    - docker-compose -f apps/api/docker/docker-compose.build.yml up -d siamcardeal-services-db
+    - docker build -t $IMAGE_API_LOCAL
+      --build-arg build=$CI_PIPELINE_ID
+      --build-arg env=development
+      --build-arg version=$TAG
+      -f apps/api/docker/Dockerfile apps/api
+    - docker-compose -f apps/api/docker/docker-compose.build.yml up -d siamcardeal-services-api
+    - docker exec siamcardeal-services-api rm -rf bootstrap/cache/*
+    - docker exec siamcardeal-services-api php artisan migrate
+    - docker exec siamcardeal-services-api vendor/bin/phpunit
+  stage: prepare
+  tags:
+    - docker
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_CONCURRENT_ID/$CI_PROJECT_PATH/$CI_PIPELINE_ID
+
+develop_api_build:
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  environment: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "0.1-develop"
+      changes:
+        - apps/api/**/*
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"credsStore\":\"ecr-login\"}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --build-arg build=$CI_PIPELINE_ID
+      --build-arg env=develop
+      --build-arg version=$TAG
+      --context $CI_PROJECT_DIR/apps/api
+      --dockerfile $CI_PROJECT_DIR/apps/api/docker/Dockerfile
+      --destination $IMAGE_API_DEVELOP
+  stage: build
+  tags:
+    - docker
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_CONCURRENT_ID/$CI_PROJECT_PATH/$CI_PIPELINE_ID
+
+develop_api_deploy:
+  image: curlimages/curl
+  needs:
+    - job: develop_api_build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - apps/api/**/*
+  script:
+    - 'curl -X POST "https://portainer.dzangolab.org/api/webhooks/$DEVELOP_PORTAINER_API_SERVICE_WEBHOOK_ID"'
+  stage: deploy
+  tags:
+    - docker
+  variables:
+    GIT_STRATEGY: none
+
+staging_api_build:
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  environment: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $VERSION
+      changes:
+        - apps/api/**/*
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"credsStore\":\"ecr-login\"}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --build-arg build=$CI_PIPELINE_ID
+      --build-arg env=staging
+      --build-arg version=$TAG
+      --context $CI_PROJECT_DIR/apps/api
+      --dockerfile $CI_PROJECT_DIR/apps/api/docker/Dockerfile
+      --destination $IMAGE_API_STAGING
+  stage: build
+  tags:
+    - docker
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_CONCURRENT_ID/$CI_PROJECT_PATH/$CI_PIPELINE_ID
+
+staging_api_deploy:
+  image: curlimages/curl
+  rules:
+    - if: $CI_COMMIT_BRANCH == $VERSION
+      changes:
+        - apps/api/**/*
+      when: manual
+  script:
+    - 'curl -X POST
+      --header "Accept: application/json"
+      --header "authorization: Bearer $SWARMPIT_STAGING_AUTH_TOKEN"
+      "https://swarmpit.scds.siamcardeal.net/api/services/siamcardeal-services_api/redeploy"'
+  stage: deploy
+  tags:
+    - docker
+  variables:
+    GIT_STRATEGY: none
+
+prod_api_build:
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  environment: build
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME =~ /^[0-9]+\.[0-9]+\.[0-9]+$/
+      changes:
+        - apps/api/**/*
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"credsStore\":\"ecr-login\"}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --build-arg build=$CI_PIPELINE_ID
+      --build-arg env=production
+      --build-arg version=$TAG
+      --context $CI_PROJECT_DIR/apps/api
+      --dockerfile $CI_PROJECT_DIR/apps/api/docker/Dockerfile
+      --destination $IMAGE_LATEST
+      --destination $IMAGE_TAGGED
+  stage: build
+  tags:
+    - docker
+  variables:
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_CONCURRENT_ID/$CI_PROJECT_PATH/$CI_PIPELINE_ID
+
+prod_api_deploy:
+  image: curlimages/curl
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME =~ /^[0-9]+\.[0-9]+\.[0-9]+$/
+      changes:
+        - apps/api/**/*
+      when: manual
+  script:
+    - 'curl -X POST
+      --header "Accept: application/json"
+      --header "authorization: Bearer $SWARMPIT_PROD_AUTH_TOKEN"
+      "https://swarmpit.webdeegroup.com/api/services/siamcardeal-services_api/redeploy"'
+  stage: deploy
+  tags:
+    - docker
+  variables:
+    GIT_STRATEGY: none

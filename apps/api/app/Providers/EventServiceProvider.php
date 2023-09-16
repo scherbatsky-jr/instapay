@@ -21,6 +21,7 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $observers = [
+        //
     ];
 
     /**

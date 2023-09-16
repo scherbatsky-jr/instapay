@@ -9,18 +9,6 @@ extend type Mutation @guard(with: ["api"]) @namespace(field: "Api\\Users\\GraphQ
 }
 
 extend type Query @guard(with: ["api"]) @namespace(field: "Api\\Users\\GraphQL\\Resolvers") {
-    dailyOperatorStats (
-        user_id: Int!
-    ): OperatorStats!
-        @validate(validator: "Api\\Users\\Validators\\DailyOperatorStatsValidator")
-        @field(resolver: "UserResolver@dailyOperatorStats")
-
-    operatorStats (
-        end_date: Date
-        start_date: Date
-    ): OperatorLeadStats
-        @field(resolver: "UserResolver@getOperatorStats")
-
     me: User
         @field(resolver: "UserResolver@me")
 
@@ -37,25 +25,9 @@ input ProfileInput {
     surname: String
 }
 
-type OperatorLeadStats {
-    users: [User]
-    total: OperatorStats
-}
-
-type OperatorStats {
-    call_failed: Int
-    call_later: Int
-    leads_processed: Int!
-    pre_qualified: Int
-    rejected: Int
-    qualified: Int
-}
-
 type Profile {
     given_name: String
-    locale: String!
     id: Int!
-    nickname: String
     surname: String
 }
 
@@ -63,10 +35,8 @@ type User {
     email: String!
     gender: Int
     id: Int!
-    parent_id: Int
     profiles: [Profile]
         @field(resolver: "Api\\Users\\Types\\UserGraphQLType@profiles")
-    stats: OperatorStats
     userRoles: [Role] @belongsToMany(relation: "userRoles")
     username: String!
 }

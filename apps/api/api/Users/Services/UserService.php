@@ -24,18 +24,6 @@ class UserService extends AbstractEntityService
         $this->repository = $repository;
     }
 
-    public function dailyOperatorStats($id)
-    {
-        $user = $this->getById($id);
-
-        return $this->getRepository()->dailyOperatorStats($user);
-    }
-
-    public function getOperatorStats($startDate, $endDate)
-    {
-        return $this->getRepository()->getOperatorStats($startDate, $endDate);
-    }
-
     public function getUserByEmail($email)
     {
         return $this->getRepository()->getUserByEmail($email);

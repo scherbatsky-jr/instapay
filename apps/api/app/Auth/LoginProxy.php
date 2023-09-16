@@ -151,9 +151,9 @@ class LoginProxy
 
         $data = json_decode($response->getContent());
 
-        if ($user) {
-            $this->dispatcher->dispatch(new LoginEvent($user));
-        }
+        // if ($user) {
+        //     $this->dispatcher->dispatch(new LoginEvent($user));
+        // }
 
         // Create a refresh token cookie
         $this->cookie->queue(

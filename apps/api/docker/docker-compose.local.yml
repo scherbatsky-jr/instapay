@@ -22,5 +22,5 @@ networks:
     external:
       name: local_default
   instapay:
-    # name: instapay
+    # name: siamcardeal-services
     external: true

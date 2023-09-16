@@ -16,7 +16,6 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Kalnoy\Nestedset\NodeTrait;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
@@ -26,7 +25,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     use HasApiTokens;
     use HasFactory;
     use MustVerifyEmail;
-    use NodeTrait;
     use Notifiable;
 
     /**
@@ -37,8 +35,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $fillable = [
         'disabled',
         'email',
-        'gender',
-        'parent_id',
         'password',
         'username',
     ];

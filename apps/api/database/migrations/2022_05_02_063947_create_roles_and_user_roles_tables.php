@@ -36,12 +36,12 @@ class CreateRolesAndUserRolesTables extends Migration
                 'name' => 'Admin',
             ],
             [
-                'role' => 'ROLE_SUPER_ADMIN',
-                'name' => 'Super Admin',
+                'role' => 'ROLE_SELLER',
+                'name' => 'Seller',
             ],
             [
-                'role' => 'ROLE_OPERATOR',
-                'name' => 'Operator',
+                'role' => 'ROLE_CUSTOMER',
+                'name' => 'Customer',
             ],
         ]);
 

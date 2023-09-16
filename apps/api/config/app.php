@@ -1,5 +1,6 @@
 <?php
 
+use Api\UserEvents\UserEventServiceProvider;
 use Illuminate\Support\Facades\Facade;
 
 $config = [
@@ -199,6 +200,7 @@ $config = [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        UserEventServiceProvider::class,
     ],
 
     /*
