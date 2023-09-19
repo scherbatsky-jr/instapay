@@ -27,6 +27,14 @@ extend type Mutation @namespace(field: "Api\\Users\\GraphQL\\Resolvers") {
     ): Result
         @field(resolver: "PasswordResetResolver@resetPassword")
 
+    signup(
+        username: String!
+        password: String!
+        withRoles: [String!]!
+        profile: ProfileInput!
+    ): LoginResult
+        @field(resolver: "LoginResolver@signup")
+
     updatePassword(
         current_password: String!
         new_password: String!

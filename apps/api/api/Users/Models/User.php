@@ -121,13 +121,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $user;
     }
 
-    public function getProfile($locale)
-    {
-        return $this->profiles
-            ->where('locale', $locale)
-            ->first();
-    }
-
     public function hasRole($roles)
     {
         $result = false;
@@ -193,9 +186,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasRole(Role::ROLE_SUPER_ADMIN);
     }
 
-    public function profiles()
+    public function profile()
     {
-        return $this->hasMany(UserProfile::class, 'id', 'id');
+        return $this->hasOne(UserProfile::class, 'id', 'id');
     }
 
     public function roles()
@@ -235,10 +228,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         static::created(
             function ($user) {
-                $user->profiles()->createMany([
-                    ['locale' => 'en'],
-                    ['locale' => 'th'],
-                ]);
+                $user->profile()->create([]);
             }
         );
     }
