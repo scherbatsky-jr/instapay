@@ -8,6 +8,8 @@ import Notifications from "@kyvg/vue3-notification";
 import router from "./router";
 
 import './style.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
 const app = createApp(App);
 

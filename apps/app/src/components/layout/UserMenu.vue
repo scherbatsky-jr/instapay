@@ -1,0 +1,36 @@
+<template>
+    <BNavbar oggleable="lg" type="dark" variant="primary">
+        <BNavbarBrand href="#">InstaPay</BNavbarBrand>
+        <BNavbarToggle target="nav-collapse" />
+        <BCollapse id="nav-collapse" is-nav>
+            <BNavbarNav class="d-flex" v-if="isLoggedIn">
+                <BNavItem >Profile</BNavItem>
+                <BNavItem @click="onLogout">Logout</BNavItem>
+            </BNavbarNav>
+        </BCollapse>
+    </BNavbar>
+</template>
+
+<script>
+import { useAuthStore } from "@/stores/auth"
+
+export default {
+    name: "UserMenu",
+
+    computed: {
+        isLoggedIn() {
+            const store = useAuthStore()
+
+            return store.isLoggedIn
+        }
+    },
+
+    methods: {
+        onLogout() {
+            const store = useAuthStore()
+
+            store.logout()
+        }
+    }
+}
+</script>
