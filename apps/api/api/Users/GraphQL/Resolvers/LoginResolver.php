@@ -33,6 +33,18 @@ class LoginResolver
         return $this->getProxy()->attemptRefresh($refresh_token);
     }
 
+    public function signup($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $this->getService()->signup($args);
+
+        $username = data_get($args, 'username');
+        $password = data_get($args, 'password');
+        $withRoles = data_get($args, 'withRoles', null);
+
+        return $this->getProxy()
+            ->attemptLogin($username, $password, $withRoles);
+    }
+
     protected function getProxy()
     {
         return resolve(LoginProxy::class);

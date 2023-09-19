@@ -20,8 +20,6 @@ extend type Query @guard(with: ["api"]) @namespace(field: "Api\\Users\\GraphQL\\
 
 input ProfileInput {
     given_name: String
-    locale: String!
-    nickname: String
     surname: String
 }
 

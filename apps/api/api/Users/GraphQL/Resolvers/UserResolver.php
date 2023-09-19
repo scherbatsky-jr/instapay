@@ -20,22 +20,6 @@ class UserResolver extends AbstractEntitiesResolver
         $this->service = $service;
     }
 
-    public function dailyOperatorStats($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
-        $id = data_get($args, 'user_id');
-
-        return $this->getService()->dailyOperatorStats($id);
-    }
-
-    public function getOperatorStats($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
-        $startDate = data_get($args, 'start_date');
-        $endDate = data_get($args, 'end_date');
-
-        return $this->getService()
-            ->getOperatorStats($startDate, $endDate);
-    }
-
     public function me($rootValue, array $args, GraphQLContext $context)
     {
         return $context->user();
