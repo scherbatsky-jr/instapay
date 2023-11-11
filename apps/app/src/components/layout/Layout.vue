@@ -1,8 +1,10 @@
 <template>
-    <div>
+    <div class="c-layout">
         <UserMenu />
-        <Menu v-if="isLoggedIn" />
-        <router-view></router-view>
+        <div class="c-layout__body">
+            <!-- <Menu v-if="isLoggedIn" /> -->
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
@@ -29,3 +31,11 @@ export default {
     }
 }
 </script>
+
+<style scoped lang="scss">
+.c-layout {
+    &__body {
+        display: flex;
+    }
+}
+</style>
