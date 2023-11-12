@@ -519,7 +519,7 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-bootstrap-vue-next@^0.13.2:
+bootstrap-vue-next@0.13.2:
   version "0.13.2"
   resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.13.2.tgz#331a34fe82eba2c0122ad375a848223a01c7d658"
   integrity sha512-9kIAxdqNWWx40p8mEI4g8HZ3zNWM8i9sxVyn3dl4fN/yuL0d0NslZ9On9QD4dM0cz/d3owqzKztYFLb9HcaXcQ==
@@ -1023,7 +1023,7 @@ vue-router@4.0.14:
   dependencies:
     "@vue/devtools-api" "^6.0.0"
 
-vue@^3.3.4:
+vue@3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.4.tgz#8ed945d3873667df1d0fcf3b2463ada028f88bd6"
   integrity sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==
