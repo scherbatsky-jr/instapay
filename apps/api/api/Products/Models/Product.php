@@ -4,7 +4,7 @@ namespace Api\Products\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Api\Stores\Models\Store;
-use Api\Products\Models\Brand;
+// use Api\Products\Models\Brand;
 use Api\Products\Models\Review;
 
 class Product extends Model
@@ -14,8 +14,9 @@ class Product extends Model
         'description',
         'price',
         'stock',
-        'brand_id',
-        'store_id'
+        'brand',
+        'store_id',
+        'created_by'
     ];
 
     protected $table = 'products';
@@ -25,10 +26,10 @@ class Product extends Model
         return $this->belongsTo(Store::class, 'store_id', 'id');
     }
 
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class, 'brand_id', 'id');
-    }
+    // public function brand()
+    // {
+    //     return $this->belongsTo(Brand::class, 'brand_id', 'id');
+    // }
 
     public function reviews()
     {

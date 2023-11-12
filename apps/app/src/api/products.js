@@ -1,0 +1,55 @@
+import { createProductMutation, product, products } from "../graphql/products";
+
+import client from '@/apolloClient'
+
+const createProduct = (data) => {
+   return client
+    .mutate({
+        mutation: createProductMutation,
+        variables: data
+    })
+    .then((response) => {
+        return response.data
+    })
+    .catch((error) => {
+        throw error;
+    })
+}
+
+const getProductById = (id) => {
+    return client
+    .query({
+      query: product,
+      variables: {
+        id: id
+      }
+    })
+    .then((response) => {
+        return response.data.product
+    })
+    .catch((error) => {
+        throw error
+    })
+}
+
+const fetchProducts = (filters, sort) => {
+    return client.query({
+        query: products,
+        variables: {
+            filters: filters,
+            sort: sort
+        }
+    })
+    .then((response) => {
+        return response.data.products
+    })
+    .catch((error) => {
+        throw error;
+    })
+}
+
+export {
+    createProduct,
+    getProductById,
+    fetchProducts
+}

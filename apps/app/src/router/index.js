@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 
 import dashboard from "./dashboard"
+import products from './products'
+import stores from "./stores"
 
 const Login = () => import('@/pages/login/Index.vue')
 
@@ -16,7 +18,9 @@ const router = createRouter({
             name: "login",
             path: "/login",
         },
-        ...dashboard
+        ...dashboard,
+        ...products,
+        ...stores,
     ]
 })
 
