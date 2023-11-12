@@ -1,30 +1,31 @@
 <template>
-    <div>
+    <div class="p-login" >
         <h1>Login</h1>
-        <Form @submit="onSubmit">
-            <div>
-                <Field
-                    v-model="credentials.username"
-                    name="email"
-                    rules="required|email"
-                    type="email"
-                >
-                </Field>
-                <ErrorMessage name="email" />
-            </div>
-            <div>
-                <Field
-                    v-model="credentials.password"
-                    name="password"
-                    rules="required"
-                    type="password"
-                >
-                </Field>
-                <ErrorMessage name="email" />
-            </div>
-            <div>
-                <button type="submit">Log In</button>
-            </div>
+        <Form @submit="onSubmit" class="p-login__form">
+                <spam class="error-message" v-if="errorMessage">{{  errorMessage }}</spam>
+                <BFormGroup label="Email">
+                    <Field
+                        v-model="credentials.username"
+                        name="email"
+                        rules="required|email"
+                    >
+                        <BFormInput v-model="credentials.username" type="email"/>
+                    </Field>
+                    <ErrorMessage name="email" class="error-message"/>
+                </BFormGroup>
+                <BFormGroup label="Password">
+                    <Field
+                        v-model="credentials.password"
+                        name="password"
+                        rules="required"
+                    >
+                    <BFormInput v-model="credentials.password" type="password"/>
+                    </Field>
+                    <ErrorMessage name="password" class="error-message"/>
+                </BFormGroup>
+                <BFormGroup>
+                    <BButton class="mt-4" variant="primary" type="submit" :disabled="disableSubmit">Log In</BButton>
+                </BFormGroup>
         </Form>
     </div>
 </template>
@@ -40,8 +41,10 @@ export default {
             credentials: {
                 username: null,
                 password: null,
-                withRoles: ["Admin"]
-            }
+                withRoles: ["Seller"]
+            },
+            disableSubmit: false,
+            errorMessage: null
         }
     },
 
@@ -49,13 +52,36 @@ export default {
         onSubmit() {
             const store = useAuthStore()
 
+            this.disableSubmit = true
+            this.errorMessage = null
+
             store.login(this.credentials)
                 .then((user) => {
                     if (user.id) {
                         this.$router.push('/dashboard')
                     }
                 })
+                .catch(() => {
+                    this.errorMessage = "Invalid Credentials"
+                })
+                .finally(() => {
+                    this.disableSubmit = false
+                })
         }
     }
 }
 </script>
+
+<style scoped lang="scss">
+.p-login {
+    text-align: center;
+    padding: 4rem;
+
+    &__form {
+        margin: auto;
+        padding: 1rem;
+        text-align: left;
+        width: fit-content;
+    }
+}
+</style>

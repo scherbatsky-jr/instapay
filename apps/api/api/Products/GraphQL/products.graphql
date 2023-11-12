@@ -1,0 +1,48 @@
+extend type Mutation
+  @guard(with: ["api"])
+  @namespace(field: "Api\\Products\\GraphQL\\Resolvers") {
+  createProduct(
+    title: String!
+    description: String!
+    price: Float!
+    stock: Int!
+    brand: String
+    store_id: Int!
+    created_by: Int!
+  ): Product! @field(resolver: "ProductResolver@create")
+
+  updateProduct(
+    id: Int!
+    title: String!
+    description: String!
+    price: Float!
+    stock: Int!
+    brand: String
+  ): Product! @field(resolver: "ProductResolver@update")
+}
+
+extend type Query
+  @guard(with: ["api"])
+  @namespace(field: "Api\\Products\\GraphQL\\Resolvers") {
+  products(
+    filters: FilterInput
+    sort: SortInput
+  ): [Product!]!
+    @field(resolver: "ProductResolver@list")
+
+  product(
+    id: Int!
+  ): Product
+  @field(resolver: "ProductResolver@find")
+}
+
+type Product {
+  title: String!
+  description: String!
+  price: Float!
+  id: Int!
+  stock: Int!
+  brand: String
+  store_id: Int!
+  created_by: Int!
+}
