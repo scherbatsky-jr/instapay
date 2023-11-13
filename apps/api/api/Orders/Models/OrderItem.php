@@ -1,9 +1,9 @@
 <?php
 
-namespace Api\Products\Models;
+namespace Api\Orders\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Api\Products\Models\Product;
+use Api\Orders\Models\Order;
 
 class OrderItem extends Model
 {
@@ -22,6 +22,6 @@ class OrderItem extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class,'product_id', 'id');
+        return $this->belongsTo(Order::class,'product_id', 'id');
     }
 }

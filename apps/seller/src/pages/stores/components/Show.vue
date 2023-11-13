@@ -28,13 +28,31 @@
             >
                 Add a products
             </button>
+
+            <OrderList />
         </div>
+
+
+
+        <BModal v-model="showOrderPopup" hideHeader hideFooter>
+            <h3>Create an Order</h3>
+            <OrderForm :products="products" ref="orderForm"/>
+            <div>
+                <button class="btn btn-danger">Cancel</button>
+                <button class="btn btn-primary" @click="onCreateOrder()">Create</button>
+            </div>
+        </BModal>
     </div>
 </template>
 
 <script>
 import { useStoreStore } from '../../../stores/stores';
 import { useProductStore } from "@/stores/products";
+import { useOrderStore } from "@/stores/orders";
+import { useAuthStore } from "@/stores/auth";
+
+import OrderForm from "@/components/orders/OrderForm.vue"
+import OrderList from "@/components/orders/List.vue"
 
 export default {
     name: 'Store',
@@ -43,11 +61,17 @@ export default {
         this.prepareComponent()
     },
 
+    components: {
+        OrderForm,
+        OrderList
+    },
+
     data() {
         return {
             loading: false,
             products: [],
-            store: {}
+            store: {},
+            showOrderPopup: false
         }
     },
 
@@ -80,6 +104,24 @@ export default {
         },
 
         createOrder() {
+            this.showOrderPopup = true
+        },
+
+        onCreateOrder() {
+            const order = this.$refs.orderForm.form;
+            const orderStore = useOrderStore();
+            const authStore = useAuthStore()
+
+            order.store_id = this.store.id;
+            order.created_by = authStore.getUser.id;
+            order.total_amount = this.$refs.orderForm.totalAmount;
+
+            console.log(order)
+
+            orderStore.createOrder(order)
+                .then(order => {
+                    window.location.reload();
+                })
 
         },
 

@@ -22,6 +22,7 @@ const parse = (value, fallback) => {
     locales: import.meta.env.VITE_LOCALES || "en:English",
     localStorageNamespace:
       import.meta.env.VITE_LOCALE_STORAGE_NAMESPACE || "instapy__",
+    wwwUrl: import.meta.env.VITE_WWW_URL
   };
   
   const feature = (name) => {
