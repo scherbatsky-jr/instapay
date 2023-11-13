@@ -132,14 +132,18 @@
             </Form>
         </div>
 
-        <div v-if="showPaymentOptions">
+        <div>
             <h3>Choose your payment method: </h3>
+                <button @click="onPayEsewa">Pay with Esewa</button>
+ 
         </div>
     </div>
 </template>
 
 <script>
 import { useOrderStore } from "@/stores/orders"
+import hmacSHA256 from "crypto-js/hmac-sha256"
+import Base64 from 'crypto-js/enc-base64';
 export default {
     name: 'OrderForm',
 
@@ -167,6 +171,9 @@ export default {
 
     methods: {
         prepareComponent() {
+            const hash = hmacSHA256("total_amount=110,transaction_uuid=ab14a8f2b02c3,product_code=EPAYTEST", "8gBm/:&EnhH.1/q");
+            const hashInBase64 = Base64.stringify(hash);
+            console.log(hashInBase64)
             this.loading = true
             const store = useOrderStore()
             const orderId = parseInt(this.$route.params.orderId)
@@ -199,6 +206,41 @@ export default {
 
                     this.showPaymentOptions = true;
                 })
+        },
+
+        generatePID() {
+            const pid = (this.order.id * this.order.total_amount)
+
+            return `${pid}-${new Date().toISOString()}`
+        },
+
+        onPayEsewa () {
+            var path="https://uat.esewa.com.np/epay/main";
+            var params= {
+                amt: this.order.total_amount,
+                psc: 0,
+                pdc: 0,
+                txAmt: 0,
+                tAmt: this.order.total_amount,
+                pid: this.generatePID(),
+                scd: "EPAYTEST",
+                su: `http://localhost:20182/order/payment_success/${this.order.id}`,
+                fu: `http://localhost:20182/order/${this.order.id}`
+            }
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", path);
+
+            for(var key in params) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+                form.appendChild(hiddenField);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
         }
     }
 }

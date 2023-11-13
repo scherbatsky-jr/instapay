@@ -17,23 +17,30 @@ extend type Mutation @namespace(field: "Api\\Orders\\GraphQL\\Resolvers") {
         id: Int!
         status: Int
         addressInfo: AddressInput
+        tracking_number: String
    ): Order!
    @field(resolver: "OrderResolver@update")
 }
 
-extend type Query @guard(with: ["api"]) @namespace(field: "Api\\Orders\\GraphQL\\Resolvers") {
-   orders(
-    filters: FilterInput
-    sort: SortInput
-   ): [Order!]!
-    @field(resolver: "OrderResolver@list")
-}
+# extend type Query @guard(with: ["api"]) @namespace(field: "Api\\Orders\\GraphQL\\Resolvers") {
+#    orders(
+#     filters: FilterInput
+#     sort: SortInput
+#    ): [Order!]!
+#     @field(resolver: "OrderResolver@list")
+# }
 
 extend type Query @namespace(field: "Api\\Orders\\GraphQL\\Resolvers") {
    order(
     id: Int!
    ): Order!
     @field(resolver: "OrderResolver@find")
+
+    orders(
+    filters: FilterInput
+    sort: SortInput
+   ): [Order!]!
+    @field(resolver: "OrderResolver@list")
 }
 
 input OrderItemInput {
@@ -76,6 +83,7 @@ type Order {
     status: Int
     items: [OrderItem!]!
     deliveryAddress: DeliveryAddress
+    tracking_number: String
     created_by: Int!
     created_at: DateTime!
     updated_at: DateTime!

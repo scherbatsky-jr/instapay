@@ -36,9 +36,11 @@ class OrderService extends AbstractEntityService
 
         $order = parent::update($data, $fields);
 
-        $address = $order->deliveryAddress()->create($addressInfo);
+        if ($addressInfo) {
+            $address = $order->deliveryAddress()->create($addressInfo);
 
-        $order->address_id = $address->id;
+            $order->address_id = $address->id;
+        }
 
         $order->save();
 

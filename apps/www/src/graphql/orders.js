@@ -34,11 +34,13 @@ export const updateOrderMutation = gql`
         $id: Int!
         $status: Int
         $addressInfo: AddressInput
+        $tracking_number: String
     ) {
         order: updateOrder(
             id: $id
             status: $status
             addressInfo: $addressInfo
+            tracking_number: $tracking_number
         ) {
             id
             store_id
@@ -66,6 +68,7 @@ export const updateOrderMutation = gql`
             total_amount
             notes
             status
+            tracking_number
             created_by
         }
     }
@@ -83,13 +86,30 @@ export const orders = gql`
             id
             store_id
             items {
-                id
                 product_id
+                product {
+                    title
+                    description
+                    price
+                }
                 count
+            }
+            deliveryAddress {
+                first_name
+                last_name
+                contact
+                email
+                street
+                area
+                city
+                state
+                landmarks 
             }
             status
             total_amount
+            tracking_number
             user_id
+            created_by
             created_by
         }
     }
@@ -126,6 +146,7 @@ export const order = gql`
             }
             status
             total_amount
+            tracking_number
             user_id
             created_by
         }

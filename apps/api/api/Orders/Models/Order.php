@@ -27,7 +27,8 @@ class Order extends Model
         'total_amount',
         'notes',
         'created_by',
-        'address_id'
+        'address_id',
+        'tracking_number'
     ];
 
     protected $table = 'orders';
