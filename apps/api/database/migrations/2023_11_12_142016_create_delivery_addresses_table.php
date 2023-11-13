@@ -15,14 +15,19 @@ return new class extends Migration
     {
         Schema::create('delivery_addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('street');
             $table->string('area');
             $table->string('city');
             $table->string("state");
+            $table->string('landmarks');
             $table->string('contact');
             $table->string('email')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

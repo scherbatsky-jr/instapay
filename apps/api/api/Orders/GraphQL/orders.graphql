@@ -10,14 +10,13 @@ extend type Mutation @guard(with: ["api"]) @namespace(field: "Api\\Orders\\Graph
         items: [OrderItemInput!]!
    ): Order!
    @field(resolver: "OrderResolver@create")
+}
 
-   updateOrder(
+extend type Mutation @namespace(field: "Api\\Orders\\GraphQL\\Resolvers") {
+    updateOrder(
         id: Int!
-        store_id: Int!
-        user_id: Int!
-        total_price: Float!
-        notes: String
-        address_id: Int
+        status: Int
+        addressInfo: AddressInput
    ): Order!
    @field(resolver: "OrderResolver@update")
 }
@@ -30,9 +29,41 @@ extend type Query @guard(with: ["api"]) @namespace(field: "Api\\Orders\\GraphQL\
     @field(resolver: "OrderResolver@list")
 }
 
+extend type Query @namespace(field: "Api\\Orders\\GraphQL\\Resolvers") {
+   order(
+    id: Int!
+   ): Order!
+    @field(resolver: "OrderResolver@find")
+}
+
 input OrderItemInput {
     product_id: Int!
     count: Int!
+}
+
+input AddressInput {
+    first_name: String
+    last_name: String
+    contact: String
+    email: String
+    street: String
+    area: String
+    city: String
+    state: String
+    landmarks: String
+}
+
+type DeliveryAddress {
+    id: Int!
+    first_name: String
+    last_name: String
+    contact: String
+    email: String
+    street: String
+    area: String
+    city: String
+    state: String
+    landmarks: String
 }
 
 type Order {
@@ -44,6 +75,7 @@ type Order {
     address_id: Int
     status: Int
     items: [OrderItem!]!
+    deliveryAddress: DeliveryAddress
     created_by: Int!
     created_at: DateTime!
     updated_at: DateTime!
@@ -53,6 +85,7 @@ type Order {
 type OrderItem {
     id: Int!
     product_id: Int!
+    product: Product!
     count: Int!
 }
 

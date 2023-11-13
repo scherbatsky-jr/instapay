@@ -28,4 +28,20 @@ class OrderService extends AbstractEntityService
 
         return $order;
     }
+
+    public function update($data, $fields = []) {
+        $addressInfo = $data['addressInfo'];
+
+        unset($data['addressInfo']);
+
+        $order = parent::update($data, $fields);
+
+        $address = $order->deliveryAddress()->create($addressInfo);
+
+        $order->address_id = $address->id;
+
+        $order->save();
+
+        return $order;
+    }
 }

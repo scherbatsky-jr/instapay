@@ -5,6 +5,7 @@ namespace Api\Orders\Models;
 use Illuminate\Database\Eloquent\Model;
 use Api\Stores\Models\Store;
 use Api\Users\Models\User;
+use Api\Orders\Models\DeliveryAddress;
 
 class Order extends Model
 {
@@ -47,5 +48,10 @@ class Order extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function deliveryAddress()
+    {
+        return $this->belongsTo(DeliveryAddress::class, 'address_id', 'id');
     }
 }
