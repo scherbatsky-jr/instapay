@@ -16,7 +16,7 @@ const routes = [
     {
         component: Order,
         path: '/track/order',
-        name: 'track-order'
+        name: 'track_order'
     }
 ]
 

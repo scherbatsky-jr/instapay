@@ -14,11 +14,11 @@ class Order extends Model
 
     public const STATUS_PAYMENT_SUCCESS = 2;
 
-    public const STATUS_PAYMENT_FAILED = 3;
+    public const STATUS_PAYMENT_FAILED = 10;
 
-    public const STATUS_SHIPPED = 4;
+    public const STATUS_SHIPPED = 3;
     
-    public const STATUS_DELIVERED = 5;
+    public const STATUS_DELIVERED = 4;
 
     protected $fillable = [
         'store_id',

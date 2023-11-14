@@ -56,6 +56,7 @@ export const orders = gql`
             user_id
             created_by
             created_at
+            tracking_number
         }
     }
 `
@@ -73,6 +74,7 @@ export const order = gql`
             status
             user_id
             created_by
+            tracking_number
         }
     }
 `

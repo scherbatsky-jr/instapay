@@ -2,12 +2,13 @@
     <div>
         <h3>Orders:</h3>
         <div class="spinner-border" v-if="loading"></div>
-        <table v-else class="table table-stripped">
+        <table v-else class="table table-striped">
             <thead>
                 <th scope="col">S.N.</th>
                 <th scope="col">Total Amount</th>
                 <th scope="col">Status</th>
                 <th scope="col">Contact</th>
+                <th scope="col" class="text-center">Tracking No.</th>
                 <th scope="col" class="text-center">Date</th>
                 <th scope="col" class="text-center">Items</th>
                 <th scope="col" class="text-center">Action</th>
@@ -18,6 +19,7 @@
                     <td>{{  order.total_amount }}</td>
                     <td>{{  getStatus(order.status) }}</td>
                     <td>{{  order.deliveryAddress ? order.deliveryAddress.contact : '--' }}</td>
+                    <td>{{  order.tracking_number ? order.tracking_number : '--' }}</td>
                     <td class="text-center">{{  order.created_at }}</td>
                     <td>
                         <ul>
