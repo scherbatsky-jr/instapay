@@ -19,6 +19,11 @@ extend type Mutation
     stock: Int!
     brand: String
   ): Product! @field(resolver: "ProductResolver@update")
+
+  addImages(
+    id: Int!
+    file: Upload!
+  ): Product! @field(resolver: "ProductResolver@addImage")
 }
 
 extend type Query
@@ -45,4 +50,5 @@ type Product {
   brand: String
   store_id: Int!
   created_by: Int!
+  images: [Image]
 }

@@ -78,8 +78,8 @@ import {
       })
       .then((response) => {
         return {
-          authTokens: response.data.signUp.authTokens,
-          user: response.data.signUp.user,
+          authTokens: response.data.signup.authTokens,
+          user: response.data.signup.user,
         };
       })
       .catch(() => {

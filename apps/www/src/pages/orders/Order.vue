@@ -20,11 +20,13 @@
         </div>
         <div v-else>
             <h3>Your Order: #{{ order.id }}</h3>
-            <div class="d-flex">
+            <div class="d-flex w-100">
                 <div>
                     <h3>Items in your Order</h3>
                     <div v-for="item in order.items" class="card order-item">
-                        <div class="image"></div>
+                        <div class="image">
+                            <img :src="getImagePath(item)" />
+                        </div>
                         <div class="p-2">
                             <h5>{{ item.product.title }}</h5>
                             <p>{{ item.product.description }}</p>    
@@ -133,6 +135,16 @@ export default {
             if (status <= this.order.status) {
                 return 'dots--green'
             }
+        },
+
+        getImagePath(item) {
+            const url = item.product.images ? item.product.images[0] : ''
+
+            url = url.replace('instapay-minio', 'localhost');
+
+            const imageUrl = url.split('?')[0];
+
+            return imageUrl
         }
     }
 }
@@ -147,7 +159,7 @@ export default {
     padding: 1rem;
     width: 40rem;
     display: grid !important;
-    grid-template-columns: 1fr 2.5fr 1fr 1fr;
+    grid-template-columns: 1fr 3.5fr 2fr 2fr;
     align-items: center;
     margin-bottom: 3rem;
 

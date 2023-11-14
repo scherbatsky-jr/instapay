@@ -1,0 +1,41 @@
+extend type Query @guard(with: ["api"]) @namespace(field: "Api\\Products\\GraphQL\\Resolvers") {
+    images (filters: FilterInput): [Image!]!
+        @field(resolver: "ImageResolver@list")
+}
+
+extend type Mutation @guard(with: ["api"]) @namespace(field: "Api\\Products\\GraphQL\\Resolvers") {
+    deleteImages (
+        ids: [Int!]!
+    ): Result
+        @field(resolver: "ImageResolver@deleteImages")
+
+    updateImages (
+        images: [UpdateImageInput!]
+    ): [Image!]
+        @field(resolver: "ImageResolver@updateFiles")
+
+    uploadImages (
+        images: [ImageInput]
+    ): [Image!]!
+        @field(resolver: "ImageResolver@uploadFiles")
+}
+
+input ImageInput {
+    file: Upload!
+    product_id: Int!
+}
+
+input UpdateImageInput {
+    cover: Boolean
+    id: Int!
+}
+
+type Image {
+    download_url: String
+    id: Int!
+    product_id: Int!
+    uploaded_by: Int!
+    uploaded_at: DateTime!
+    url: String
+}
+

@@ -130,6 +130,10 @@ export const order = gql`
                     title
                     description
                     price
+                    images {
+                        id
+                        url
+                    }
                 }
                 count
             }

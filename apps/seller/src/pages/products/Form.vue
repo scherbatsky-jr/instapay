@@ -77,7 +77,11 @@
       </div>
   
       <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-danger" @click="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      
     </Form>
   </template>
   
@@ -117,6 +121,10 @@
         this.form.stock = parseInt(this.form.stock)
         this.$emit('form:submit', this.form)
       },
+
+      onCancel() {
+        this.$router.push({ name: 'show-store', params: { storeId: this.form.store_id }})
+      }
     },
 
     props: {
@@ -137,6 +145,10 @@
   <style lang="scss">
   .c-product-form {
     margin: 0 5rem;
+
+    label {
+      font-weight: 800;
+    }
     .form-control {
       width: 75%;
     }

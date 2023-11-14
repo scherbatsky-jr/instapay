@@ -4,20 +4,25 @@ namespace Api\Products\Models;
 
 use App\Documents\Contracts\UploadableInterface;
 use App\Documents\Traits\Uploadable;
-use Nanigans\SingleTableInheritance\SingleTableInheritanceTrait;
 use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model implements UploadableInterface
 {
-    use SingleTableInheritanceTrait;
     use Uploadable;
 
+    public $timestamps = false;
+
     protected $fillable = [
+        'document_id',
         'product_id',
-        'name',
-        'path'
+        'uploaded_at',
+        'uploaded_by',
+    ];
+
+    protected $hidden = [
+        'document',
     ];
 
     protected $table = 'product_images';
@@ -29,18 +34,18 @@ class Image extends Model implements UploadableInterface
         return sprintf('%s-%s-%s',
             $now->format('Ymd'),
             $now->valueOf(),
-            $this->lead->id
+            $this->product->id
         );
     }
 
     public function getDocumentRootPath(): string
     {
-        return sprintf('leads/%s', $this->lead->id);
+        return sprintf('products/%s', $this->product->id);
     }
 
     public function isPublic(): bool
     {
-        return false;
+        return true;
     }
 
     public function product()

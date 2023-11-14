@@ -1,6 +1,6 @@
 import client from "@/apolloClient";
 
-import { createOrderMutation, orders, order } from "@/graphql/orders";
+import { createOrderMutation, orders, order, updateOrderMutation } from "@/graphql/orders";
 
 const createOrder = (data) => {
     return client
@@ -48,8 +48,22 @@ const fetchOrders = (filters, sort) => {
     })
 }
 
+const updateOrder = (data) => {
+    return client.mutate({
+        mutation: updateOrderMutation,
+        variables: data
+    })
+    .then((response) => {
+        return response.data.order
+    })
+    .catch((error) => {
+        throw error;
+    })
+}
+
 export {
     createOrder,
     getOrderById,
-    fetchOrders
+    fetchOrders,
+    updateOrder
 }

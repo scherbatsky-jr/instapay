@@ -8,7 +8,7 @@
                     <Icon icon="healthicons:market-stall-outline" class="icon"/>
                     <h5>{{  store.name }}</h5>
                 </div>
-                <div class="card">
+                <div class="card" @click="onCreateStore()">
                     <Icon icon="zondicons:add-solid" class="icon"/>
                     <h5>Create a store</h5>
                 </div>
@@ -19,6 +19,7 @@
 
 <script>
 import { useStoreStore } from '../../stores/stores';
+import { useAuthStore } from "@/stores/auth"
 
 export default {
     name: "Dashboard",
@@ -39,8 +40,12 @@ export default {
             this.loading = true
 
             const store = useStoreStore();
+            const authStore = useAuthStore();
 
-            store.fetchStores().then(() => {
+            store.fetchStores({
+                key: 'user_id',
+                value: authStore.getUser.id
+            }).then(() => {
                 this.stores = store.getStores;
             }).finally(() => {
                 this.loading = false
@@ -50,6 +55,10 @@ export default {
 
         onClickStore(id) {
             this.$router.push({ name: 'show-store', params: { storeId: id}})
+        },
+
+        onCreateStore() {
+            this.$router.push({ name: 'add-store' })
         }
     }
 }

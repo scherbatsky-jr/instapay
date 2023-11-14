@@ -2,7 +2,10 @@
     <div class="m-4 p-store">
         <div class="spinner-border" role="status" v-if="loading"></div>
         <div v-else class="d-flex flex-column">
-            <h2><Icon icon="healthicons:market-stall-outline" class="icon"/>{{ store.name }}</h2>
+            <h2 class="store-header"><Icon icon="healthicons:market-stall-outline" class="icon"/>{{ store.name }}</h2>
+            <hr />
+            <Stats :storeId="store.id" class="mb-5"/>
+            <OrderList class="m-3" :storeId="store.id" />
             <div class="m-3">
                 <div class="d-flex header mb-3">
                     <h4>
@@ -34,15 +37,13 @@
                             <td>{{  product.stock }}</td>
                             <td>{{  product.brand ? product.brand : '--' }}</td>
                             <td class="text-center">
+                                <button @click="showProduct(product.id)" class="btn btn-success">Update</button>
                                 <button @click="createOrder()" class="btn btn-primary">Create an Order</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
-            <OrderList class="m-3"/>
-
 
             <BModal v-model="showOrderPopup" hideHeader hideFooter>
                 <h3>Create an Order</h3>
@@ -64,6 +65,7 @@ import { useAuthStore } from "@/stores/auth";
 
 import OrderForm from "@/components/orders/OrderForm.vue"
 import OrderList from "@/components/orders/List.vue"
+import Stats from './Stats.vue';
 
 export default {
     name: 'Store',
@@ -74,7 +76,8 @@ export default {
 
     components: {
         OrderForm,
-        OrderList
+        OrderList,
+        Stats
     },
 
     data() {
@@ -148,6 +151,10 @@ export default {
 
                     this.getProducts();
                 })
+        },
+
+        showProduct(id) {
+            this.$router.push({ name: 'show-product', params: {storeId: this.store.id, productId: id}})
         }
     }
 
@@ -158,6 +165,13 @@ export default {
 <style lang="scss">
 .p-store {
     width: 100%;
+
+    .store-header {
+        svg {
+            height: 5rem;
+            width: 5rem;
+        }
+    }
 
     .header {
         justify-content: space-between;

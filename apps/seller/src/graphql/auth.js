@@ -58,16 +58,33 @@ export const resetPasswordRequestMutation = gql`
 `;
 
 export const signUpMutation = gql`
-  mutation signUp($email: String!, $password: String!, $username: String!) {
-    signUp(email: $email, password: $password, username: $username) {
-      authTokens {
-        accessToken
-        expiresIn
-        refreshToken
+  mutation signup(
+    $password: String!
+    $username: String!
+    $withRoles: [String!]!
+    $profile: ProfileInput!
+    ) {
+    signup(
+      password: $password
+      username: $username
+      withRoles: $withRoles
+      profile: $profile
+    ) {
+      authTokens: auth_tokens {
+        accessToken: access_token
+        expiresIn: expires_in
+        refreshToken: refresh_token
       }
       user {
+        id
         email
         username
+        profiles {
+          given_name
+          surname
+          contact
+          status
+        }
       }
     }
   }

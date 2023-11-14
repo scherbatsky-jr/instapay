@@ -47,8 +47,14 @@ export const store = gql`
 `
 
 export const stores = gql`
-    query stores {
-        stores {
+    query stores(
+        $filters: FilterInput
+        $sort: SortInput
+    ) {
+        stores (
+            filters: $filters
+            sort: $sort
+        ) {
             id
             email
             instagram
@@ -57,6 +63,20 @@ export const stores = gql`
             tiktok
             website
             user_id
+        }
+    }
+`
+
+export const storeStats = gql`
+    query storeStats ($id: Int!) {
+        storeStats (id: $id) {
+            total_orders
+            open
+            payment_pending
+            payment_success
+            payment_failed
+            shipped
+            delivered
         }
     }
 `

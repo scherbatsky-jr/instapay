@@ -1,6 +1,5 @@
 extend type Mutation @guard(with: ["api"]) @namespace(field: "Api\\Users\\GraphQL\\Resolvers") {
     updateProfile (
-        gender: Int
         id: Int!
         profiles: [ProfileInput!]!
     ): User
@@ -21,12 +20,18 @@ extend type Query @guard(with: ["api"]) @namespace(field: "Api\\Users\\GraphQL\\
 input ProfileInput {
     given_name: String
     surname: String
+    contact: String
+    status: Int
+    plan: Int
+    plan_end_date: Int
 }
 
 type Profile {
     given_name: String
     id: Int!
     surname: String
+    contact: String
+    status: Int
 }
 
 type User {

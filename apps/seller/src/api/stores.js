@@ -1,4 +1,4 @@
-import { createStoreMutation, store, stores } from "../graphql/store";
+import { createStoreMutation, store, stores, storeStats } from "../graphql/store";
 
 import client from '@/apolloClient'
 
@@ -32,9 +32,13 @@ const getStoreById = (id) => {
     })
 }
 
-const fetchStores = () => {
+const fetchStores = (filters, sort) => {
     return client.query({
-        query: stores
+        query: stores,
+        variables: {
+            filters: filters,
+            sort: sort
+        }
     })
     .then((response) => {
         return response.data.stores
@@ -44,8 +48,24 @@ const fetchStores = () => {
     })
 }
 
+const getStoreStats = (id) => {
+    return client.query({
+        query: storeStats,
+        variables: {
+            id: id
+        }
+    })
+    .then((response) => {
+        return response.data.storeStats
+    })
+    .catch((error) => {
+        throw error;
+    })
+}
+
 export {
     createStore,
     getStoreById,
-    fetchStores
+    fetchStores,
+    getStoreStats
 }

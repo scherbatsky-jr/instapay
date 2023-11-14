@@ -13,4 +13,10 @@ class StoreResolver extends AbstractEntitiesResolver
     {
         $this->service = $service;
     }
+
+    public function stats($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) {
+        return $this->getService()
+            ->setUser($context->user())
+            ->stats(data_get($args, 'id'));
+    }
 }

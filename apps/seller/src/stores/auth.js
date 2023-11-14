@@ -30,8 +30,6 @@ import {
       },
   
       async logout() {
-        AttempLogout();
-  
         this.user = null;
         this.authTokens = null;
         this.expiresAt = null;
@@ -41,6 +39,8 @@ import {
         storage.removeItem("___auth_expiresAt");
   
         router.push({ name: "login" });
+
+        // AttempLogout();
       },
   
       async resetPassword(resetPasswordPayload) {

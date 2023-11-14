@@ -4,6 +4,7 @@ namespace Api\Stores\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Api\Users\Models\User;
+use Api\Orders\Models\Order;
 
 class Store extends Model
 {
@@ -22,5 +23,9 @@ class Store extends Model
     public function seller()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class, 'store_id', 'id');
     }
 }

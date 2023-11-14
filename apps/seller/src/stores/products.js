@@ -1,4 +1,4 @@
-import { createProduct, getProductById, fetchProducts } from "@/api/products";
+import { createProduct, getProductById, fetchProducts, uploadImages } from "@/api/products";
 import { defineStore } from "pinia";
 
 export const useProductStore = defineStore('products', {
@@ -18,6 +18,12 @@ export const useProductStore = defineStore('products', {
         getProductById(id) {
             return getProductById(id).then((product) => {
                 return product;
+            })
+        },
+
+        uploadImages(data) {
+            return uploadImages(data).then((images) => {
+                return images;
             })
         }
     },

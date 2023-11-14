@@ -1,5 +1,19 @@
 <template>
-    <Form @submit="submitForm" v-slot="{ errors }">
+    <Form @submit="submitForm" v-slot="{ errors }" class="c-store-form">
+      <!-- Name Field -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Name:</label>
+        <Field
+          v-model="form.name"
+          name="name"
+          id="name"
+          rules="required"
+          :class="{ 'is-invalid': errors.name }"
+          class="form-control"
+        />
+        <div v-if="errors.name" class="invalid-feedback">{{ errors.name }}</div>
+      </div>
+
       <!-- Email Field -->
       <div class="mb-3">
         <label for="email" class="form-label">Email:</label>
@@ -43,20 +57,6 @@
         <div v-if="errors.phone" class="invalid-feedback">{{ errors.phone }}</div>
       </div>
   
-      <!-- Name Field -->
-      <div class="mb-3">
-        <label for="name" class="form-label">Name:</label>
-        <Field
-          v-model="form.name"
-          name="name"
-          id="name"
-          rules="required"
-          :class="{ 'is-invalid': errors.name }"
-          class="form-control"
-        />
-        <div v-if="errors.name" class="invalid-feedback">{{ errors.name }}</div>
-      </div>
-  
       <!-- TikTok Field -->
       <div class="mb-3">
         <label for="tiktok" class="form-label">TikTok:</label>
@@ -84,7 +84,10 @@
       </div>
   
       <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="d-flex">
+        <button @click="onCancel()" class="btn btn-danger">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
     </Form>
   </template>
   
@@ -106,8 +109,11 @@
     },
     methods: {
       async submitForm() {
-        console.log('I am here')
         this.$emit('form:submit', this.form)
+      },
+
+      onCancel() {
+        this.$emit('cancel')
       }
     }
   };

@@ -126,13 +126,21 @@
             <div>
                 <h3>Items in your Order</h3>
                 <div v-for="item in order.items" class="card order-item">
-                    <div class="image"></div>
+                    <div class="image">
+                            <img :src="getImagePath(item)" />
+                        </div>
                     <div class="p-2">
                         <h5>{{ item.product.title }}</h5>
                         <p>{{ item.product.description }}</p>    
                     </div>
-                    <p>{{ 'Quantity: ' + item.count  }}</p>
-                    <p>{{ 'Total Amount: ' + (item.count * item.product.price) }}</p>
+                    <div>
+                        <p>Quantity</p>
+                        <p>{{ item.count }}</p>
+                    </div>
+                    <div>
+                        <p>Total Amount</p>
+                        <p>{{ item.count * item.product.price }}</p>
+                    </div>
                 </div>
                 <h5>Total Price: {{ order.total_amount }}</h5>
             </div>
@@ -252,6 +260,16 @@ export default {
 
             document.body.appendChild(form);
             form.submit();
+        },
+
+        getImagePath(item) {
+            let url = item.product.images ? item.product.images[0].url : ''
+
+            url = url.replace('instapay-minio', 'localhost');
+
+            const imageUrl = url.split('?')[0];
+
+            return imageUrl
         }
     }
 }
@@ -262,17 +280,22 @@ export default {
     width: 100%;
 
     .order-item {
+        align-items: center;
         padding: 1rem;
         width: 40rem;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 2fr 1fr 1fr;
         align-items: center;
         margin-bottom: 3rem;
+        grid-gap: 1rem;
 
         .image {
             border: 1px solid grey;
-            width: 5rem;
-            height: 5rem;
+
+            img {
+                width: 6rem;
+                height: 6rem;
+            }
         }
     }
 }

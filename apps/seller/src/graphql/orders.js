@@ -29,6 +29,51 @@ export const createOrderMutation = gql`
     }
 `
 
+export const updateOrderMutation = gql`
+    mutation updateOrder(
+        $id: Int!
+        $status: Int
+        $addressInfo: AddressInput
+        $tracking_number: String
+    ) {
+        order: updateOrder(
+            id: $id
+            status: $status
+            addressInfo: $addressInfo
+            tracking_number: $tracking_number
+        ) {
+            id
+            store_id
+            items {
+                product_id
+                product {
+                    title
+                    description
+                    price
+                }
+                count
+            }
+            deliveryAddress {
+                first_name
+                last_name
+                contact
+                email
+                street
+                area
+                city
+                state
+                landmarks
+            }
+            user_id
+            total_amount
+            notes
+            status
+            tracking_number
+            created_by
+        }
+    }
+`
+
 export const orders = gql`
     query orders(
         $filters: FilterInput

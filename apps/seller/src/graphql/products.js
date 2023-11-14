@@ -42,6 +42,10 @@ export const product = gql`
             stock
             brand
             store_id
+            images {
+                id
+                url
+            }
         }
     }
 `
@@ -62,6 +66,20 @@ export const products = gql`
             stock
             brand
             store_id
+        }
+    }
+`
+
+export const uploadImagesMutation = gql`
+    mutation uploadImages (
+        $images: [ImageInput]
+    ) {
+        uploadImages(
+            images: $images
+        ) {
+            id
+            product_id
+            url
         }
     }
 `

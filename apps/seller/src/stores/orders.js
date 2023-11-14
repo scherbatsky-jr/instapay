@@ -1,4 +1,4 @@
-import { createOrder, getOrderById, fetchOrders } from "@/api/orders";
+import { createOrder, getOrderById, fetchOrders, updateOrder } from "@/api/orders";
 import { defineStore } from "pinia";
 
 export const useOrderStore = defineStore('orders', {
@@ -17,6 +17,12 @@ export const useOrderStore = defineStore('orders', {
 
         getOrderById(id) {
             return getOrderById(id).then((order) => {
+                return order;
+            })
+        },
+
+        updateOrder(data) {
+            return updateOrder(data).then((order) => {
                 return order;
             })
         }

@@ -27,6 +27,7 @@
                         </ul>
                     </td>
                     <td class="text-center">
+                        <button class="btn btn-success" @click="onUpdateStatus(order)">Update Status</button>
                         <button class="btn btn-primary" @click="copyOrderLink(order)">
                             Copy Order Link
                         </button>
@@ -34,6 +35,27 @@
                 </tr>
             </tbody>
         </table>
+
+        <BModal v-model="showPopup" hideHeader hideFooter>
+            <div>
+                <h3>Update Order Status</h3>
+                <div><strong>Order No: #{{ orderInput.id }}</strong></div>
+                <div class="form-group mt-2 mb-3">
+                    <label for="status">Order Status</label>
+                    <Field v-model="orderInput.status" name="status" id="status">
+                        <select class="form-control" v-model="orderInput.status">
+                            <option :value=2>Payment Success</option>
+                            <option :value=3>Shipped</option>
+                            <option :value=4>Delivered</option>
+                        </select>
+                    </Field>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button @click="showPopup = false" class="btn btn-danger">Cancel</button>
+                    <button @click="updateStatus()" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </BModal>
     </div>
 </template>
 
@@ -50,7 +72,9 @@ export default {
     data () {
         return {
             loading: false,
-            orders: []
+            orders: [],
+            showPopup: false,
+            orderInput: {}
         }
     },
 
@@ -59,7 +83,10 @@ export default {
             this.loading = true
             const store = useOrderStore()
 
-            store.fetchOrders()
+            store.fetchOrders({
+                key: 'store_id',
+                value: this.storeId
+            })
                 .then(orders => {
                     this.orders = orders
                 })
@@ -93,6 +120,35 @@ export default {
                     return "New Order"
                     break;
             }
+        },
+
+        onUpdateStatus(order) {
+            this.orderInput = {
+                id: order.id,
+                status: order.status,
+                addressInfo: null
+            }
+
+            this.showPopup = true
+        },
+
+        updateStatus() {
+            const store = useOrderStore()
+
+            store.updateOrder(this.orderInput)
+                .then((order) => {
+                    this.prepareComponent()
+                })
+                .finally(() => {
+                    this.showPopup = false
+                })
+        }
+    },
+
+    props: {
+        storeId: {
+            required: true,
+            type: Number
         }
     }
 }

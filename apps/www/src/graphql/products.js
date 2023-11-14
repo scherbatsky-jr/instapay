@@ -65,3 +65,17 @@ export const products = gql`
         }
     }
 `
+
+export const uploadImagesMutation = gql`
+    mutation uploadImages (
+        $images: [ImageInput]
+    ) {
+        uploadImages(
+            images: $images
+        ) {
+            id
+            product_id
+            url
+        }
+    }
+`
