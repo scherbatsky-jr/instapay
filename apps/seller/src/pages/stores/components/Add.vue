@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="d-flex flex-column m-4">
         <h1>Add a store</h1>
         <Form
             @form:submit="createStore"

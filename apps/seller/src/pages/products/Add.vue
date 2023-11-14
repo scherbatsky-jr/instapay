@@ -1,8 +1,10 @@
 <template>
-    <h2>Add a product</h2>
-    <Form
-        @form:submit="addProduct"
-    />
+    <div class="d-flex flex-column m-4 p-add-product">
+        <h2>Add a product</h2>
+        <Form
+            @form:submit="addProduct"
+        />
+    </div>
 </template>
 
 <script>
@@ -28,10 +30,16 @@ export default {
             store.createProduct(product)
                 .then((product) => {
                     if (product.id) {
-                        this.$router.push({name: 'stores', params: { storeId: product.store_id }})
+                        this.$router.push({name: 'show-store', params: { storeId: product.store_id }})
                     }
                 })
         }
     }
 }
 </script>
+
+<style lang="scss">
+.p-add-product {
+    width: 100%
+}
+</style>

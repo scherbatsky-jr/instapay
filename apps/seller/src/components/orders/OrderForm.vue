@@ -1,10 +1,12 @@
 <template>
     <div>
-        <div v-for="item in form.items">
-            <div>{{  item.title }}</div>
-            <div class="form-group">
-                <label>No. of item</label>
-                <input type="number" v-model="item.count" disabled />
+        <div v-if="form.items.length" class="mb-4">
+            <h5>Order Items:</h5>
+            <div v-for="item in form.items">
+                <li>
+                        <strong>{{ getItemName(item.product_id) }}</strong>
+                        <p class="quantity">{{  'Quantity: ' + item.count }}</p>
+                </li>
             </div>
         </div>
 
@@ -20,12 +22,14 @@
             <Field type="number" class="form-control" name="count" v-model="item.count"/>
         </div>
 
-        <div class="form-group">
-            <label>Notes</label>
-            <Field v-model="form.notes" class="form-control" />
-        </div>
+        <button @click="addItem()" class="btn btn-primary mt-2">Add item</button>
 
-        <button @click="addItem()" class="btn btn-primary">Add item</button>
+        <div class="form-group mt-5">
+            <label>Notes</label>
+            <Field v-model="form.notes" class="form-control">
+                <textarea v-model="form.notes" class="form-control"></textarea>
+            </Field>
+        </div>
     </div>
 </template>
 
@@ -83,6 +87,10 @@ export default {
                 product_id: null,
                 count: null
             }
+        },
+
+        getItemName(id) {
+            return this.products.find(product => product.id === id).title
         }
     },
 
@@ -94,3 +102,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.quantity {
+    margin-left: 1.25rem
+}
+</style>

@@ -9,7 +9,7 @@ const createProduct = (data) => {
         variables: data
     })
     .then((response) => {
-        return response.data
+        return response.data.product
     })
     .catch((error) => {
         throw error;

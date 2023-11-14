@@ -1,47 +1,58 @@
 <template>
-    <div class="spinner-border" role="status" v-if="loading"></div>
-    <div v-else>
-        <h2>{{ store.name }}</h2>
-        <div>
-            <h4>Your store products</h4>
-            <table>
-                <thead>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Actions</th>
-                </thead>
-                <tbody>
-                    <tr v-for="product in products">
-                        <td>{{  product.title }}</td>
-                        <td>{{  product.price }}</td>
-                        <td>{{  product.stock }}</td>
-                        <td>
-                            <button @click="createOrder()" class="btn btn-primary">Create an Order</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button
-                @click="addProduct()"
-                class="btn btn-primary"
-            >
-                Add a products
-            </button>
-
-            <OrderList />
-        </div>
-
-
-
-        <BModal v-model="showOrderPopup" hideHeader hideFooter>
-            <h3>Create an Order</h3>
-            <OrderForm :products="products" ref="orderForm"/>
-            <div>
-                <button class="btn btn-danger">Cancel</button>
-                <button class="btn btn-primary" @click="onCreateOrder()">Create</button>
+    <div class="m-4 p-store">
+        <div class="spinner-border" role="status" v-if="loading"></div>
+        <div v-else class="d-flex flex-column">
+            <h2><Icon icon="healthicons:market-stall-outline" class="icon"/>{{ store.name }}</h2>
+            <div class="m-3">
+                <div class="d-flex header mb-3">
+                    <h4>
+                        Products
+                    </h4>
+                    <button
+                        @click="addProduct()"
+                        class="btn btn-primary"
+                    >
+                        Add a product
+                    </button>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <th>S.N.</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="product, index in products">
+                            <th scope="row">{{  index + 1 }}</th>
+                            <td>{{  product.title }}</td>
+                            <td>{{  product.description }}</td>
+                            <td>{{  product.price }}</td>
+                            <td>{{  product.stock }}</td>
+                            <td>{{  product.brand ? product.brand : '--' }}</td>
+                            <td class="text-center">
+                                <button @click="createOrder()" class="btn btn-primary">Create an Order</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </BModal>
+
+            <OrderList class="m-3"/>
+
+
+            <BModal v-model="showOrderPopup" hideHeader hideFooter>
+                <h3>Create an Order</h3>
+                <OrderForm :products="products" ref="orderForm"/>
+                <div class="d-flex mt-4 justify-content-between">
+                    <button class="btn btn-danger">Cancel</button>
+                    <button class="btn btn-primary" @click="onCreateOrder()">Create</button>
+                </div>
+            </BModal>
+        </div>
     </div>
 </template>
 
@@ -143,3 +154,13 @@ export default {
 
 }
 </script>
+
+<style lang="scss">
+.p-store {
+    width: 100%;
+
+    .header {
+        justify-content: space-between;
+    }
+}
+</style>

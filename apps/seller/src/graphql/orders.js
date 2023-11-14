@@ -39,16 +39,23 @@ export const orders = gql`
             sort: $sort
         ) {
             id
+            deliveryAddress {
+                contact
+            }
             store_id
             items {
                 id
-                product_id
+                product {
+                    id
+                    title
+                }
                 count
             }
             status
             total_amount
             user_id
             created_by
+            created_at
         }
     }
 `

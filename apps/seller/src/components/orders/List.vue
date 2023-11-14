@@ -1,25 +1,30 @@
 <template>
     <div>
+        <h3>Orders:</h3>
         <div class="spinner-border" v-if="loading"></div>
-        <table v-else>
+        <table v-else class="table table-stripped">
             <thead>
-                <th>Total Amount</th>
-                <th>Status</th>
-                <th>Created At</th>
-                <th>Items</th>
-                <th>Action</th>
+                <th scope="col">S.N.</th>
+                <th scope="col">Total Amount</th>
+                <th scope="col">Status</th>
+                <th scope="col">Contact</th>
+                <th scope="col" class="text-center">Date</th>
+                <th scope="col" class="text-center">Items</th>
+                <th scope="col" class="text-center">Action</th>
             </thead>
             <tbody>
-                <tr v-for="order in orders">
+                <tr v-for="order, index in orders">
+                    <th scope="row">{{  index + 1 }}</th>
                     <td>{{  order.total_amount }}</td>
-                    <td>{{  order.status }}</td>
-                    <td>{{  order.created_at }}</td>
+                    <td>{{  getStatus(order.status) }}</td>
+                    <td>{{  order.deliveryAddress ? order.deliveryAddress.contact : '--' }}</td>
+                    <td class="text-center">{{  order.created_at }}</td>
                     <td>
                         <ul>
-                            <li v-for="item in order.items">{{ item.product_id }}</li>
+                            <li v-for="item in order.items">{{ item.product.title }}</li>
                         </ul>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <button class="btn btn-primary" @click="copyOrderLink(order)">
                             Copy Order Link
                         </button>
@@ -66,6 +71,26 @@ export default {
             console.log(orderLink)
 
             navigator.clipboard.writeText(orderLink);
+        },
+
+        getStatus(status) {
+            switch (status) {
+                case 1:
+                    return "Payment Pending"
+                    break;
+                case 2:
+                    return "Payment Success"
+                    break;
+                case 3:
+                    return "Shipped"
+                    break;
+                case 4:
+                    return "Delivered"
+                    break
+                default:
+                    return "New Order"
+                    break;
+            }
         }
     }
 }

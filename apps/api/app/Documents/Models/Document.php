@@ -22,7 +22,7 @@ class Document extends Model
         'public',
     ];
 
-    protected $table = 'scds_documents';
+    protected $table = 'documents';
 
     public function getFileName(): ?string
     {

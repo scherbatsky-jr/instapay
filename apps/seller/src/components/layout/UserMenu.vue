@@ -1,11 +1,11 @@
 <template>
     <BNavbar oggleable="lg" type="dark" variant="primary">
-        <BNavbarBrand href="#">InstaPay</BNavbarBrand>
+        <BNavbarBrand href="/dashboard" class="text-white">InstaPay Merchant</BNavbarBrand>
         <BNavbarToggle target="nav-collapse" />
-        <BCollapse id="nav-collapse" is-nav>
+        <BCollapse id="nav-collapse" is-nav >
             <BNavbarNav class="d-flex" v-if="isLoggedIn">
-                <BNavItem >Profile</BNavItem>
-                <BNavItem @click="onLogout">Logout</BNavItem>
+                <BNavItem class="text-white" >Profile</BNavItem>
+                <BNavItem @click="onLogout" class="text-white">Logout</BNavItem>
             </BNavbarNav>
         </BCollapse>
     </BNavbar>
@@ -31,7 +31,7 @@ export default {
 
             store.logout()
 
-            this.$router.push('/login')
+            this.$router.push({name: 'login'})
         }
     }
 }

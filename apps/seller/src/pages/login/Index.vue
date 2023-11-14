@@ -1,13 +1,14 @@
 <template>
-    <div class="p-login" >
+    <div class="p-login container" >
         <h1>Login</h1>
         <Form @submit="onSubmit" class="p-login__form">
                 <spam class="error-message" v-if="errorMessage">{{  errorMessage }}</spam>
-                <BFormGroup label="Email">
+                <BFormGroup label="Email" class="w-20">
                     <Field
                         v-model="credentials.username"
                         name="email"
                         rules="required|email"
+                        class="form-control"
                     >
                         <BFormInput v-model="credentials.username" type="email"/>
                     </Field>
@@ -82,6 +83,10 @@ export default {
         padding: 1rem;
         text-align: left;
         width: fit-content;
+
+        fieldset {
+            min-width: 20rem !important;
+        }
     }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="c-layout">
         <UserMenu />
-        <div class="c-layout__body">
+        <div class="c-layout__body bg-light">
             <!-- <Menu v-if="isLoggedIn" /> -->
             <router-view></router-view>
         </div>
@@ -36,6 +36,7 @@ export default {
 .c-layout {
     &__body {
         display: flex;
+        min-height: 98vh;
     }
 }
 </style>

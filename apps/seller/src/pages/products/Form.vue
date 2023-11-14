@@ -1,5 +1,5 @@
 <template>
-    <Form @submit="submitForm" v-slot="{ errors }">
+    <Form @submit="submitForm" v-slot="{ errors }" class="c-product-form" >
       <!-- Title Field -->
       <div class="mb-3">
         <label for="title" class="form-label">Title:</label>
@@ -12,7 +12,7 @@
           :class="{ 'is-invalid': errors.title }"
           class="form-control"
         />
-        <div v-if="errors.title" class="invalid-feedback">{{ errors.first('title') }}</div>
+        <div v-if="errors.title" class="invalid-feedback">{{ errors.title }}</div>
       </div>
   
       <!-- Description Field -->
@@ -29,7 +29,7 @@
             <textarea v-model="form.description" class="form-control">
             </textarea>
         </Field>
-        <div v-if="errors.description" class="invalid-feedback">{{ errors.first('description') }}</div>
+        <div v-if="errors.description" class="invalid-feedback">{{ errors.description }}</div>
       </div>
   
       <!-- Price Field -->
@@ -44,7 +44,7 @@
           :class="{ 'is-invalid': errors.price }"
           class="form-control"
         />
-        <div v-if="errors.price" class="invalid-feedback">{{ errors.first('price') }}</div>
+        <div v-if="errors.price" class="invalid-feedback">{{ errors.price }}</div>
       </div>
   
       <!-- Stock Field -->
@@ -59,7 +59,7 @@
           :class="{ 'is-invalid': errors.stock }"
           class="form-control"
         />
-        <div v-if="errors.stock" class="invalid-feedback">{{ errors.first('stock') }}</div>
+        <div v-if="errors.stock" class="invalid-feedback">{{ errors.stock }}</div>
       </div>
   
       <!-- Brand Field -->
@@ -70,11 +70,10 @@
           name="brand"
           id="brand"
           type="text"
-          rules="required"
           :class="{ 'is-invalid': errors.brand }"
           class="form-control"
         />
-        <div v-if="errors.brand" class="invalid-feedback">{{ errors.first('brand') }}</div>
+        <div v-if="errors.brand" class="invalid-feedback">{{ errors.brand }}</div>
       </div>
   
       <!-- Submit Button -->
@@ -134,4 +133,13 @@
     }
   };
   </script>
+
+  <style lang="scss">
+  .c-product-form {
+    margin: 0 5rem;
+    .form-control {
+      width: 75%;
+    }
+  }
+  </style>
   
