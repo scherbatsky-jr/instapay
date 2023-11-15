@@ -1,4 +1,10 @@
-import { createProductMutation, product, products, uploadImagesMutation  } from "../graphql/products";
+import { createProductMutation,
+    product,
+    products,
+    uploadImagesMutation,
+    deleteImagesMutation,
+    updateProductMutation 
+} from "../graphql/products";
 
 import client from '@/apolloClient'
 
@@ -15,6 +21,20 @@ const createProduct = (data) => {
         throw error;
     })
 }
+
+const updateProduct = (data) => {
+    return client
+     .mutate({
+         mutation: updateProductMutation,
+         variables: data
+     })
+     .then((response) => {
+         return response.data.product
+     })
+     .catch((error) => {
+         throw error;
+     })
+ }
 
 const getProductById = (id) => {
     return client
@@ -61,9 +81,28 @@ const uploadImages = (data) => {
          throw error;
      })
     }
+
+const deleteImages = (ids) => {
+    return client
+        .mutate({
+            mutation: deleteImagesMutation,
+            variables: {
+                ids: ids
+            }
+        })
+        .then((response) => {
+            return response.data.success
+        })
+        .catch((error) => {
+            throw error;
+        })
+    }
+
 export {
     createProduct,
     getProductById,
     fetchProducts,
-    uploadImages
+    uploadImages,
+    deleteImages,
+    updateProduct
 }

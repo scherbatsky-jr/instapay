@@ -3,6 +3,7 @@
         <h2>Add a product</h2>
         <Form
             @form:submit="addProduct"
+            :disable-submit="disableSubmit"
         />
     </div>
 </template>
@@ -20,6 +21,12 @@ export default {
         Form
     },
 
+    data() {
+        return {
+            disableSubmit: false
+        }
+    },
+
     methods: {
         addProduct(product) {
             const store = useProductStore();
@@ -27,11 +34,16 @@ export default {
 
             product.created_by = authStore.getUser.id
 
+            this.disableSubmit = true
+
             store.createProduct(product)
                 .then((product) => {
                     if (product.id) {
                         this.$router.push({name: 'show-store', params: { storeId: product.store_id }})
                     }
+                })
+                .finally(() => {
+                    this.disableSubmit = false
                 })
         }
     }

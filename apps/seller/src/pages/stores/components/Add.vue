@@ -4,6 +4,7 @@
         <Form
             @cancel="onCancel()"
             @form:submit="createStore"
+            :disable-submit="disableSubmit"
         />
     </div>
 </template>
@@ -19,12 +20,24 @@ export default {
         Form
     },
 
+    data () {
+        return {
+            disableSubmit: false
+        }
+    },
+
     methods: {
         createStore(storeData) {
-            console.log(storeData)
             const store = useStoreStore();
 
-            store.createStore(storeData);
+            this.disableSubmit = true
+            store.createStore(storeData)
+                .then((store) => {
+                    this.$router.push('/dashboard')
+                })
+                .finally(() => {
+                    this.disableSubmit = false
+                });
         },
 
         onCancel () {

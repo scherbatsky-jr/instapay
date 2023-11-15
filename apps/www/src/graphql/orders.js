@@ -50,6 +50,10 @@ export const updateOrderMutation = gql`
                     title
                     description
                     price
+                    images {
+                        id
+                        url
+                    }
                 }
                 count
             }
@@ -91,6 +95,10 @@ export const orders = gql`
                     title
                     description
                     price
+                    images {
+                        id
+                        url
+                    }
                 }
                 count
             }

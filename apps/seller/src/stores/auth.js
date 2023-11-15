@@ -5,6 +5,7 @@ import {
     resetPassword as AttemptResetPassword,
     resetPasswordRequest as AttemptResetPasswordRequest,
     signUp as AttemptSignUp,
+    updateProfile
   } from "@/api/auth";
   
   import { defineStore } from "pinia";
@@ -92,6 +93,14 @@ import {
             this.logout();
           });
         }
+      },
+
+      updateProfile(data) {
+        return updateProfile(data).then((user) => {
+          this.updateUser(user)
+          
+          return user
+        })
       },
   
       async updateUser(user) {

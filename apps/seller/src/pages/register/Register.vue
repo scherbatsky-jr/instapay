@@ -90,7 +90,7 @@
       </div>
   
       <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary">Register</button>
+      <button type="submit" class="btn btn-primary" :disabled="disableSubmit">Register</button>
     </Form>
     </div>
   </template>
@@ -109,6 +109,7 @@
           password: '',
           confirmPassword: '',
         },
+        disableSubmit: false
       };
     },
     methods: {
@@ -127,14 +128,19 @@
 
         const store = useAuthStore()
 
+        this.disableSubmit = true
+
         store.signUp(registerInput)
             .then((user) => {
                 console.log(user)
                 if (user.id) {
-                    this.$router.push({name: 'dashboard'})
+                    this.$router.push({name: 'payment-plans' })
                 }
             })
-
+            .finally(() => {
+              this.disableSubmit = false
+            })
+ 
       },
     },
   };

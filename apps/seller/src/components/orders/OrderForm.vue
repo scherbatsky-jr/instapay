@@ -26,7 +26,7 @@
 
         <div class="form-group mt-5">
             <label>Notes</label>
-            <Field v-model="form.notes" class="form-control">
+            <Field v-model="form.notes" class="form-control" name="notes">
                 <textarea v-model="form.notes" class="form-control"></textarea>
             </Field>
         </div>

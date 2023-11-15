@@ -4,8 +4,8 @@
         <div v-else class="d-flex flex-column">
             <h2 class="store-header"><Icon icon="healthicons:market-stall-outline" class="icon"/>{{ store.name }}</h2>
             <hr />
-            <Stats :storeId="store.id" class="mb-5"/>
-            <OrderList class="m-3" :storeId="store.id" />
+            <Stats :storeId="store.id" class="mb-5" v-if="store && store.id"/>
+            <OrderList class="m-3" :storeId="store.id"  v-if="store && store.id"/>
             <div class="m-3">
                 <div class="d-flex header mb-3">
                     <h4>
@@ -45,11 +45,11 @@
                 </table>
             </div>
 
-            <BModal v-model="showOrderPopup" hideHeader hideFooter>
+            <BModal v-model="showOrderPopup" v-if="showOrderPopup" hideHeader hideFooter>
                 <h3>Create an Order</h3>
                 <OrderForm :products="products" ref="orderForm"/>
                 <div class="d-flex mt-4 justify-content-between">
-                    <button class="btn btn-danger">Cancel</button>
+                    <button class="btn btn-danger" @click="showOrderPopup = false">Cancel</button>
                     <button class="btn btn-primary" @click="onCreateOrder()">Create</button>
                 </div>
             </BModal>
@@ -70,7 +70,7 @@ import Stats from './Stats.vue';
 export default {
     name: 'Store',
 
-    created () {
+    mounted () {
         this.prepareComponent()
     },
 
@@ -129,8 +129,6 @@ export default {
             order.store_id = this.store.id;
             order.created_by = authStore.getUser.id;
             order.total_amount = this.$refs.orderForm.totalAmount;
-
-            console.log(order)
 
             orderStore.createOrder(order)
                 .then(order => {

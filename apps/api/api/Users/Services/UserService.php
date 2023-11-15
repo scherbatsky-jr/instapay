@@ -109,7 +109,7 @@ class UserService extends AbstractEntityService
 
     protected function beforeEntityUpdate($user, $data = [])
     {
-        unset($data['profiles']);
+        unset($data['profile']);
 
         return $data;
     }
@@ -131,8 +131,8 @@ class UserService extends AbstractEntityService
 
     protected function onEntityUpdate($user, array $fields = [], $data = [])
     {
-        $user->profiles()->delete();
-        $newProfiles = data_get($data, 'profiles', []);
-        $user->profiles()->createMany($newProfiles);
+        $user->profile()->delete();
+        $newProfiles = data_get($data, 'profile', []);
+        $user->profile()->create($newProfiles);
     }
 }

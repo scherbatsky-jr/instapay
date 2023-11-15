@@ -149,41 +149,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasRole(Role::ROLE_ADMIN);
     }
 
-    public function isAdminUser()
-    {
-        return $this->hasRole(Role::ROLE_ADMIN) ||
-            $this->hasRole(Role::ROLE_SUPER_ADMIN);
-    }
-
-    public function isBrokerManager()
-    {
-        return $this->hasRole(Role::ROLE_BROKER_MANAGER);
-    }
-
-    public function isBrokerSalesperson()
-    {
-        return $this->hasRole(Role::ROLE_BROKER_SALES);
-    }
-
-    public function isBrokerUser()
-    {
-        return $this->hasRole(Role::ROLE_BROKER_MANAGER) ||
-            $this->hasRole(Role::ROLE_BROKER_SALES);
-    }
-
     public function isDisabled()
     {
         return $this->disabled;
-    }
-
-    public function isOperator()
-    {
-        return $this->hasRole(Role::ROLE_OPERATOR);
-    }
-
-    public function isSuperAdmin()
-    {
-        return $this->hasRole(Role::ROLE_SUPER_ADMIN);
     }
 
     public function profile()

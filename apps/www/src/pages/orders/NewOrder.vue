@@ -119,7 +119,7 @@
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+                    <button type="submit" class="btn btn-primary" :disabled="disableSubmit">Proceed to Payment</button>
                 </Form>
             </div>
 
@@ -180,7 +180,8 @@ export default {
                 state: null,
                 landmarks: null
             },
-            showPaymentOptions: false
+            showPaymentOptions: false,
+            disableSubmit: false
         }
     },
 
@@ -219,11 +220,15 @@ export default {
                 addressInfo: this.addressInfo
             }
 
+            this.disableSubmit = true
             store.updateOrder(orderInput)
                 .then(order => {
                     this.order = order;
 
                     this.showPaymentOptions = true;
+                })
+                .finally(() => {
+                    this.disableSubmit = false
                 })
         },
 

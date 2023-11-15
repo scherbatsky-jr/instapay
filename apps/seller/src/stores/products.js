@@ -1,10 +1,16 @@
-import { createProduct, getProductById, fetchProducts, uploadImages } from "@/api/products";
+import { createProduct, updateProduct, getProductById, fetchProducts, uploadImages, deleteImages } from "@/api/products";
 import { defineStore } from "pinia";
 
 export const useProductStore = defineStore('products', {
     actions: {
         createProduct(data) {
             return createProduct(data).then((product) => {
+                return product
+            })
+        },
+
+        updateProduct(data) {
+            return updateProduct(data).then((product) => {
                 return product
             })
         },
@@ -24,6 +30,12 @@ export const useProductStore = defineStore('products', {
         uploadImages(data) {
             return uploadImages(data).then((images) => {
                 return images;
+            })
+        },
+
+        deleteImages(ids) {
+            return deleteImages(ids).then((success) => {
+                return success;
             })
         }
     },

@@ -9,6 +9,7 @@
           id="title"
           type="text"
           rules="required"
+          :disabled="mode == 'edit'"
           :class="{ 'is-invalid': errors.title }"
           class="form-control"
         />
@@ -78,8 +79,8 @@
   
       <!-- Submit Button -->
       <div class="d-flex justify-content-between">
-        <button class="btn btn-danger" @click="onCancel()">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button class="btn btn-danger" @click="onCancel()" :disabled="disableSubmit">Cancel</button>
+        <button type="submit" class="btn btn-primary" :disabled="disableSubmit">Submit</button>
       </div>
       
     </Form>
@@ -112,7 +113,7 @@
         this.form.store_id = storeId
 
         if (this.mode === 'edit') {
-            this.form = this.product
+            this.form = JSON.parse(JSON.stringify(this.product))
         }
       },
 
@@ -136,6 +137,10 @@
             required: false,
             default: {},
             type: Object
+        },
+        disableSubmit: {
+          default: false,
+          type: Boolean
         }
 
     }

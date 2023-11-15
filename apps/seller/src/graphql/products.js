@@ -30,6 +30,34 @@ export const createProductMutation = gql`
     }
 `
 
+export const updateProductMutation = gql`
+    mutation updateProduct(
+        $id: Int!
+        $title: String!
+        $description: String!
+        $price: Float!
+        $stock: Int!
+        $brand: String
+    ) {
+        product: updateProduct(
+            id: $id
+            title: $title
+            description: $description
+            price: $price
+            stock: $stock
+            brand: $brand
+        ) {
+            title
+            description
+            price
+            id
+            stock
+            brand
+            store_id
+        }
+    }
+`
+
 export const product = gql`
     query product (
         $id: Int!
@@ -80,6 +108,14 @@ export const uploadImagesMutation = gql`
             id
             product_id
             url
+        }
+    }
+`
+
+export const deleteImagesMutation = gql`
+    mutation deleteImages($ids: [Int!]!) {
+        deleteImages (ids: $ids) {
+            success
         }
     }
 `

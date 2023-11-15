@@ -85,8 +85,8 @@
   
       <!-- Submit Button -->
       <div class="d-flex">
-        <button @click="onCancel()" class="btn btn-danger">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button @click="onCancel()" class="btn btn-danger" :disabled="disableSubmit">Cancel</button>
+        <button type="submit" class="btn btn-primary" :disabled="disableSubmit">Submit</button>
       </div>
     </Form>
   </template>
@@ -106,6 +106,12 @@
           user_id: null
         }
       };
+    },
+    props: {
+      disableSubmit: {
+        default: false,
+        type: Boolean
+      }
     },
     methods: {
       async submitForm() {

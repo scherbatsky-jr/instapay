@@ -5,7 +5,7 @@ export const useStoreStore = defineStore('stores', {
     actions: {
         createStore(data) {
             return createStore(data).then((store) => {
-                this.stores.push(store)
+                // this.stores.push(store)
                 return store
             })
         },

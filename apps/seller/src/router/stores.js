@@ -12,16 +12,25 @@ const routes = [
         children: [
             {
                 component: Add,
+                meta: {
+                    authenticated: true,
+                },
                 name: "add-store",
                 path: "add",
             },
             {
                 component: List,
+                meta: {
+                    authenticated: true,
+                },
                 name: 'stores',
                 path: ''
             },
             {
                 component: Show,
+                meta: {
+                    authenticated: true,
+                },
                 name: 'show-store',
                 path: ':storeId',
             }

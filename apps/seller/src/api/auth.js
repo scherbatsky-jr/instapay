@@ -5,6 +5,7 @@ import {
     resetPasswordMutation,
     resetPasswordRequestMutation,
     signUpMutation,
+    updateProfileMutation,
   } from "@/graphql/auth";
   import client from "@/apolloClient";
   
@@ -102,6 +103,17 @@ import {
       })
       .then((response) => {
         return response.data.refreshToken
+      });
+  };
+
+  export const updateProfile = (data) => {
+    return client
+      .mutate({
+        mutation: updateProfileMutation,
+        variables: data
+      })
+      .then((response) => {
+        return response.data.user
       });
   };
   

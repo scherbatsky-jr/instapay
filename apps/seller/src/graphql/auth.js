@@ -15,9 +15,14 @@ export const loginMutation = gql`
       user {
         email
         id
-        profiles {
+        profile {
+          id
           given_name
           surname
+          status
+          contact
+          plan
+          plan_end_date
         }
         username
       }
@@ -79,13 +84,41 @@ export const signUpMutation = gql`
         id
         email
         username
-        profiles {
+        profile {
           given_name
           surname
           contact
           status
+          plan
+          plan_end_date
         }
       }
     }
   }
+`;
+
+export const updateProfileMutation = gql`
+    mutation updateProfile(
+        $id: Int!
+        $profile: ProfileInput!
+    ) {
+      user: updateProfile (
+        id: $id
+        profile: $profile
+      ) {
+        id
+        email
+        username
+        profile {
+          id
+          given_name
+          surname
+          contact
+          status
+          plan
+          plan_end_date
+        }
+      }
+    }
+  
 `;

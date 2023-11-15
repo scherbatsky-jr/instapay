@@ -28,6 +28,8 @@
                     <BButton class="mt-4" variant="primary" type="submit" :disabled="disableSubmit">Log In</BButton>
                 </BFormGroup>
         </Form>
+
+        <router-link :to="{name: 'register'}">Click here to register!</router-link>
     </div>
 </template>
 

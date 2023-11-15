@@ -12,7 +12,9 @@ class Profile extends Model
         'given_name',
         'surname',
         'contact',
-        'status'
+        'status',
+        'plan',
+        'plan_end_date'
     ];
 
     protected $table = 'profiles';

@@ -1,9 +1,8 @@
 extend type Mutation @guard(with: ["api"]) @namespace(field: "Api\\Users\\GraphQL\\Resolvers") {
     updateProfile (
         id: Int!
-        profiles: [ProfileInput!]!
+        profile: ProfileInput!
     ): User
-        @validate(validator: "Api\\Users\\Validators\\UpdateProfileValidator")
         @field(resolver: "UserResolver@update")
 }
 
@@ -23,7 +22,7 @@ input ProfileInput {
     contact: String
     status: Int
     plan: Int
-    plan_end_date: Int
+    plan_end_date: DateTime
 }
 
 type Profile {
@@ -32,14 +31,15 @@ type Profile {
     surname: String
     contact: String
     status: Int
+    plan: Int
+    plan_end_date: DateTime
 }
 
 type User {
     email: String!
     gender: Int
     id: Int!
-    profiles: [Profile]
-        @field(resolver: "Api\\Users\\Types\\UserGraphQLType@profiles")
+    profile: Profile
     userRoles: [Role] @belongsToMany(relation: "userRoles")
     username: String!
 }

@@ -97,8 +97,8 @@ export default {
                 tAmt: this.chosenPlan.totalCost,
                 pid: this.generatePID(),
                 scd: "EPAYTEST",
-                su: `http://localhost:20181/plan_success`,
-                fu: `http://localhost:20182/paymentplans`
+                su: `http://localhost:20181/plan-success/${this.plan}`,
+                fu: `http://localhost:20181/payment-plans`
             }
             var form = document.createElement("form");
             form.setAttribute("method", "POST");

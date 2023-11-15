@@ -42,9 +42,13 @@ export const product = gql`
             stock
             brand
             store_id
+            images {
+                id
+                url
+            }
         }
     }
-`
+`  
 
 export const products = gql`
     query products (

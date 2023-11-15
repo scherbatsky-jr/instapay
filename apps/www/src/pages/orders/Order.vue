@@ -15,7 +15,7 @@
                     />
                     <span class="invalid-feedback" v-if="errors.tracking">{{  errors.tracking }}</span>
                 </div>
-                <button class="btn btn-primary" type="submit">Submit</button>
+                <button class="btn btn-primary" type="submit" :disabled="disableSubmit">Submit</button>
             </Form>
         </div>
         <div v-else>
@@ -93,7 +93,8 @@ export default {
     data () {
         return {
             showForm: true,
-            trackingNumber: null
+            trackingNumber: null,
+            disableSubmit: false
         }
     },
 
@@ -114,6 +115,7 @@ export default {
         submitForm() {
             const store = useOrderStore()
 
+            this.disableSubmit = true
             store.fetchOrders({
                 key: 'tracking_number',
                 value: this.trackingNumber
@@ -122,6 +124,9 @@ export default {
                 this.order = orders[0]
 
                 this.showForm = false
+            })
+            .finally(() => {
+                this.disableSubmit = false
             })
         },
 
@@ -138,7 +143,7 @@ export default {
         },
 
         getImagePath(item) {
-            const url = item.product.images ? item.product.images[0] : ''
+            let url = item.product.images ? item.product.images[0].url : ''
 
             url = url.replace('instapay-minio', 'localhost');
 
@@ -159,14 +164,20 @@ export default {
     padding: 1rem;
     width: 40rem;
     display: grid !important;
-    grid-template-columns: 1fr 3.5fr 2fr 2fr;
+    grid-template-columns: 1fr 2fr 1fr 1fr;;
     align-items: center;
     margin-bottom: 3rem;
+    grid-gap: 1rem;
 
     .image {
         border: 1px solid grey;
-        width: 5rem;
-        height: 5rem;
+        width: fit-content;
+
+        img {
+            width: 5rem;
+            height: 5rem;
+        }
+        
     }
 }
 
