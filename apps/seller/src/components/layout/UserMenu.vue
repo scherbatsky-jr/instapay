@@ -3,8 +3,8 @@
         <div class="d-flex justify-content-between w-100">
             <BNavbarBrand href="/dashboard" class="text-white">InstaPay Merchant</BNavbarBrand>
             <BNavbarNav class="d-flex text-white"  v-if="isLoggedIn">
-                <BNavItem class="text-white" >Profile</BNavItem>
-                <BNavItem @click="onLogout">Logout</BNavItem>
+                <BNavItem ><Icon icon="mingcute:user-4-line" class="icon" /></BNavItem>
+                <BNavItem @click="onLogout"><Icon icon="icon-park-outline:logout" class="icon"/></BNavItem>
             </BNavbarNav>
         </div>
     </BNavbar>
@@ -33,3 +33,11 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+.icon {
+    height: 2rem;
+    width: 2rem;
+    color: white;
+}
+</style>

@@ -49,8 +49,8 @@
                 <h3>Create an Order</h3>
                 <OrderForm :products="products" ref="orderForm"/>
                 <div class="d-flex mt-4 justify-content-between">
-                    <button class="btn btn-danger" @click="showOrderPopup = false">Cancel</button>
-                    <button class="btn btn-primary" @click="onCreateOrder()">Create</button>
+                    <button class="btn btn-danger" @click="showOrderPopup = false" :disabled="disableSubmit">Cancel</button>
+                    <button class="btn btn-primary" @click="onCreateOrder()" :disabled="disableSubmit">Create</button>
                 </div>
             </BModal>
         </div>
@@ -85,7 +85,8 @@ export default {
             loading: false,
             products: [],
             store: {},
-            showOrderPopup: false
+            showOrderPopup: false,
+            disableSubmit: false
         }
     },
 
@@ -130,9 +131,13 @@ export default {
             order.created_by = authStore.getUser.id;
             order.total_amount = this.$refs.orderForm.totalAmount;
 
+            this.disableSubmit = true
             orderStore.createOrder(order)
                 .then(order => {
                     window.location.reload();
+                })
+                .finally(() => {
+                    this.disableSubmit = false
                 })
 
         },
